@@ -119,7 +119,7 @@ open class TextureLayerUtils {
      */
     fun createForSheets(resourceSize: Int) {
         sensor.transformSelectionRectangle()
-        
+
 
     }
 
