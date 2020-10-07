@@ -1,0 +1,193 @@
+
+zxsna.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+arrow16x8
+  rotate: false
+  xy: 160, 1961
+  size: 16, 7
+  orig: 16, 8
+  offset: 0, 0
+  index: -1
+arrowDown
+  rotate: false
+  xy: 96, 1898
+  size: 16, 10
+  orig: 16, 16
+  offset: 0, 3
+  index: -1
+border
+  rotate: false
+  xy: 64, 1876
+  size: 32, 32
+  split: 2, 2, 2, 2
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+buttonOff9p
+  rotate: false
+  xy: 0, 1844
+  size: 32, 32
+  split: 8, 8, 8, 8
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+buttonOn9p
+  rotate: false
+  xy: 64, 1908
+  size: 32, 32
+  split: 8, 8, 8, 8
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+checkOffIcon
+  rotate: false
+  xy: 128, 1926
+  size: 16, 10
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+checkOnIcon
+  rotate: false
+  xy: 32, 1830
+  size: 16, 14
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+color959696
+  rotate: false
+  xy: 48, 1843
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+colorBlack
+  rotate: false
+  xy: 0, 1795
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+colorDarkGray
+  rotate: false
+  xy: 240, 2031
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+colorGray
+  rotate: false
+  xy: 16, 1811
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+colorLightGray
+  rotate: false
+  xy: 32, 1829
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+colorWhite
+  rotate: false
+  xy: 224, 2015
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+defaultPane9
+  rotate: false
+  xy: 0, 1876
+  size: 64, 64
+  split: 7, 7, 23, 7
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+doubleArrow
+  rotate: false
+  xy: 0, 1796
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+fillTool
+  rotate: false
+  xy: 192, 1968
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+font_16_java
+  rotate: false
+  xy: 0, 1940
+  size: 128, 92
+  orig: 128, 128
+  offset: 0, 35
+  index: -1
+gradientBG
+  rotate: false
+  xy: 128, 1936
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+gradientGG
+  rotate: false
+  xy: 32, 1844
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+manicminer
+  rotate: false
+  xy: 0, 2032
+  size: 2048, 16
+  orig: 2048, 16
+  offset: 0, 0
+  index: -1
+penTool
+  rotate: false
+  xy: 192, 2000
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+selectTool
+  rotate: false
+  xy: 96, 1908
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+selector
+  rotate: false
+  xy: 0, 1812
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+settingsIcon
+  rotate: false
+  xy: 64, 1862
+  size: 16, 14
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+squadIcon
+  rotate: false
+  xy: 224, 2016
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+titlePane9
+  rotate: false
+  xy: 128, 1968
+  size: 64, 64
+  split: 3, 3, 6, 4
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
