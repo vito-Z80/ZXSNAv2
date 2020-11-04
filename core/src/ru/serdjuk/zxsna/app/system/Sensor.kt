@@ -1,17 +1,15 @@
 package ru.serdjuk.zxsna.app.system
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteCell
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteData
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteUtils
 import kotlin.math.abs
 
 @ExperimentalUnsignedTypes
 class Sensor {
 
+    val screenBounds = Rectangle()
+    val worldBounds = Rectangle()
 
     val screenMouse = Vector2()
     private val mouseJob = Vector2()
@@ -28,7 +26,7 @@ class Sensor {
     val selectRectangle = Rectangle()
 
     // позиция доставленной ячейки из главной палитры в пользовательскую
-    val landingCell = PaletteCell(-1, "", PaletteData.paletteTables.mainRegion)
+//    val landingCell = PaletteCell(-1, "", PaletteData.paletteTables.mainRegion)
 
     /**
      * преобразует выделение в правильный прямоугольник
@@ -40,6 +38,11 @@ class Sensor {
         val width = abs(sensor.selectRectangle.width)
         val height = abs(sensor.selectRectangle.height)
         selectRectangle.set(x, y, width, height)
+    }
+
+    fun resizeBounds() {
+        // FIXME add world bounds changed
+        screenBounds.set(0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     }
 
 }

@@ -1,19 +1,19 @@
 package ru.serdjuk.zxsna.app.system
 
 import com.badlogic.gdx.Input
-import ru.serdjuk.zxsna.app.component.component
-
-import ru.serdjuk.zxsna.app.component.world.tools.AppTools
+import ru.serdjuk.zxsna.app.component.world.tools.AppToolsSystem
 import ru.serdjuk.zxsna.app.utils.keyHold
 import ru.serdjuk.zxsna.app.utils.keyOnce
 import java.util.*
 
+@ExperimentalUnsignedTypes
 object History {
 
     val hp = Stack<UR>()
     var position = 0
 
-    val tools = component.get<AppTools>().tools
+    //    val tools = component.get<AppToolsSystem>().tools
+    val tools = system.set<AppToolsSystem>(true).tools
 
 
     fun update() {

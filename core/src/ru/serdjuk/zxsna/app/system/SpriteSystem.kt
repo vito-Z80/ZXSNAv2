@@ -15,13 +15,6 @@ class SpriteSystem : ISystem {
 
     }
 
-    override fun setSystem() {
-        isVisible = true
-    }
-
-    override fun resetSystem() {
-        isVisible = false
-    }
 
 }
 

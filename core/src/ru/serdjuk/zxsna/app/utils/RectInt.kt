@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2
 
 class RectInt(var x: Int = 0, var y: Int = 0, var width: Int = 0, var height: Int = 0) {
 
+
+
     fun overlaps(r: Rectangle): Boolean {
         return x < r.x + r.width && x + width > r.x && y < r.y + r.height && y + height > r.y
     }
@@ -22,6 +24,13 @@ class RectInt(var x: Int = 0, var y: Int = 0, var width: Int = 0, var height: In
         this.y = y
         this.width = width
         this.height = height
+    }
+
+    fun set(rect: RectInt) {
+        this.x = rect.x
+        this.y = rect.y
+        this.width = rect.width
+        this.height = rect.height
     }
 
     /** Creates rectangles of the specified size from the user's selection area.

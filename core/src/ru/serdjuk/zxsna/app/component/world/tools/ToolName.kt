@@ -7,6 +7,5 @@ final class ToolName {
         const val FILL = 2
         const val SELECT = 4
 
-        var used = 0
     }
 }

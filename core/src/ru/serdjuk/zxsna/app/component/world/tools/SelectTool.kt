@@ -41,7 +41,7 @@ class SelectTool : ITools() {
 
         // FIXME запретить выполнение если открыто меню слоя
 
-        if (toolName == ToolName.used) {
+        if (toolName == AppToolsSystem.usedTool) {
             select()
 //            showMenu()
         }

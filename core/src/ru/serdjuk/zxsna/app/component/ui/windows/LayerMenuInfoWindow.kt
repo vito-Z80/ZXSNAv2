@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import ru.serdjuk.zxsna.app.component.ui.UI
+import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
 import ru.serdjuk.zxsna.app.system.*
 
 @ExperimentalUnsignedTypes
@@ -109,14 +110,14 @@ class LayerMenuInfoWindow(private val workName: String) : Window(" Process $work
                 addAction(Actions.removeActor())
                 if (isPaletteOffsetNumber) {
                     additionToFileName.append("_")
-                    additionToFileName.append(sensor.paletteOffset)
+                    additionToFileName.append(AppPaletteWindow.offset)
                 }
 
                 // FIXME определять какое расширение файлу добавлять, так-же дать юзеру изменять расширение файла
                 additionToFileName.append(".spr")
 
-                file.saveData(res.layers[sensor.paletteOffset].collectResource!!, additionToFileName.toString())
-                res.layers[sensor.paletteOffset].collectResource = null
+                file.saveData(res.layers[AppPaletteWindow.offset].collectResource!!, additionToFileName.toString())
+                res.layers[AppPaletteWindow.offset].collectResource = null
             }
         })
         val table = Table()

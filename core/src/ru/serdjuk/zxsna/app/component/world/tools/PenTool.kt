@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.IntArray
+import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
+import ru.serdjuk.zxsna.app.system.*
 import ru.serdjuk.zxsna.app.utils.buttonHold
 import ru.serdjuk.zxsna.app.utils.buttonOnce
 import ru.serdjuk.zxsna.app.utils.isPointInPolygon
 import ru.serdjuk.zxsna.app.utils.keyHold
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteData
-import ru.serdjuk.zxsna.app.resources.hexColor512
-import ru.serdjuk.zxsna.app.system.*
 
 @ExperimentalUnsignedTypes
 class PenTool : ITools() {
@@ -24,8 +23,7 @@ class PenTool : ITools() {
 
     override var toolName = ToolName.PEN
     override fun update(delta: Float) {
-        if (ToolName.used != toolName) return
-
+        if (AppToolsSystem.usedTool != toolName) return
         if (buttonOnce(0)) {
             startDraw = true
             points.clear()
@@ -46,20 +44,18 @@ class PenTool : ITools() {
         } else {
             if (startDraw && points.size > 0) {
                 startDraw = false
-                val data = URPointsData(sensor.paletteOffset, IntArray(colors), IntArray(points))
+                val data = URPointsData(AppPaletteWindow.offset, IntArray(colors), IntArray(points))
                 History.push(data)
-                println("COLORS COUNT: ${colors.size}")
-                println("PIXELS COUNT: ${points.size}")
             }
         }
     }
 
     override fun undo(data: UR?) {
         if (data is URPointsData) {
-            sensor.paletteOffset = data.layerId
-            val bitmap = res.layers[sensor.paletteOffset].pixmap
+            AppPaletteWindow.offset = data.layerId
+            val bitmap = res.layers[AppPaletteWindow.offset].pixmap
             bitmap.blending = Pixmap.Blending.None
-            val texture = res.layers[sensor.paletteOffset].texture
+            val texture = res.layers[AppPaletteWindow.offset].texture
             while (data.points.size > 0) {
                 val y = data.points.pop()
                 val x = data.points.pop()
@@ -71,9 +67,9 @@ class PenTool : ITools() {
     }
 
     private fun setPixel() {
-        val bitmap = res.layers[sensor.paletteOffset].pixmap
+        val bitmap = res.layers[AppPaletteWindow.offset].pixmap
         bitmap.blending = Pixmap.Blending.None
-        val texture = res.layers[sensor.paletteOffset].texture
+        val texture = res.layers[AppPaletteWindow.offset].texture
         val x = 0f
         val y = 0f
         val w = bitmap.width.toFloat()
@@ -90,11 +86,11 @@ class PenTool : ITools() {
 //            val bitmapColor = Color(bitmap.getPixel(mouseX, mouseY))
             val bitmapColor = Color()
             Color.rgba8888ToColor(bitmapColor, bitmap.getPixel(mouseX, mouseY))
-            if (bitmap.getPixel(mouseX, mouseY) != PaletteData.intColor) {
-                println(PaletteData.intColor)
+            if (AppPaletteWindow.userIntColor != null && bitmap.getPixel(mouseX, mouseY) != AppPaletteWindow.userIntColor) {
                 colors.add(bitmap.getPixel(mouseX, mouseY))
                 points.add(mouseX, mouseY)
-                bitmap.setColor(hexColor512[PaletteData.colorId].int)
+//                bitmap.setColor(hexColor512[PaletteData.colorId].int)
+                bitmap.setColor(AppPaletteWindow.userIntColor!!)
                 bitmap.drawPixel(mouseX, mouseY)
                 texture.draw(bitmap, 0, 0)
             }

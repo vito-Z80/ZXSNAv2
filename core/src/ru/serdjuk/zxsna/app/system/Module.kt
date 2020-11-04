@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.kotcrab.vis.ui.VisUI
-import ru.serdjuk.zxsna.app.component.ui.palette.AtlasUtils
+import ru.serdjuk.zxsna.app.utils.AtlasUtils
 
 @ExperimentalUnsignedTypes
 class Module() {

@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.IntArray
 import ru.serdjuk.zxsna.app.utils.buttonOnce
 import ru.serdjuk.zxsna.app.utils.toInt
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteData
+import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
 import ru.serdjuk.zxsna.app.system.*
 
+@ExperimentalUnsignedTypes
 class FillTool : ITools() {
 
     // допроверить работу undo (от и до)
@@ -22,13 +23,13 @@ class FillTool : ITools() {
 
     override fun update(delta: Float) {
 
-        if (ToolName.used == toolName && buttonOnce(0)) {
+        if (AppToolsSystem.usedTool == toolName && buttonOnce(0) && AppPaletteWindow.userIntColor != null) {
             // TODO add to coroutine
             val mX = sensor.worldMouse.x.toInt()
             val mY = sensor.worldMouse.y.toInt()
-            val replaceableColor = fill(mX, mY, PaletteData.color)
+            val replaceableColor = fill(mX, mY, Color(AppPaletteWindow.userIntColor!!))
             if (replaceableColor != null) {
-                val data = URFillData(sensor.paletteOffset, replaceableColor, mX, mY)
+                val data = URFillData(AppPaletteWindow.offset, replaceableColor, mX, mY)
                 History.push(data)
             }
         }
@@ -38,7 +39,7 @@ class FillTool : ITools() {
     override fun undo(data: UR?) {
         if (data is URFillData) {
 //            AppColor.currentUserColor.set(data.color)
-            sensor.paletteOffset = data.layerId
+            AppPaletteWindow.offset = data.layerId
             fill(data.x, data.y, Color(data.intColor))
         }
     }
@@ -52,13 +53,13 @@ class FillTool : ITools() {
     }
 
     private fun fill(startX: Int, startY: Int, userColor: Color): Int? {
-        val bitmap = res.layers[sensor.paletteOffset].pixmap
+        val bitmap = res.layers[AppPaletteWindow.offset].pixmap
         val replaceableColor = bitmap.getPixel(startX, startY)
         if (replaceableColor == Color.rgba8888(userColor)) return null
 
 
 
-        val texture = res.layers[sensor.paletteOffset].texture
+        val texture = res.layers[AppPaletteWindow.offset].texture
         val width = bitmap.width
         val height = bitmap.height
         stack.add(startX, startY)

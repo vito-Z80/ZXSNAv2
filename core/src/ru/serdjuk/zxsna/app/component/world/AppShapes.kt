@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.sensor
@@ -15,15 +16,16 @@ import ru.serdjuk.zxsna.app.utils.keyOnce
 class AppShapes {
 
     //    val camera = Agent.module.render.camera
+    @Transient
     val shape = ShapeRenderer().also { it.setAutoShapeType(true) }
 
     //    private val t = res.data.workLayers[res.data.sensor.plSpinner].region
-    private val t = res.layers[sensor.paletteOffset].region
+    @Transient
+    private val t = res.layers[AppPaletteWindow.offset].region
 
     val color01 = Color(1f, 1f, 1f, 0.1f)
     val color02 = Color(1f, 1f, 1f, 0.2f)
     val color03 = Color(1f, 1f, 1f, 0.3f)
-
     var isGrid = true
 
     fun update() {
@@ -98,4 +100,5 @@ class AppShapes {
 
 }
 
+@ExperimentalUnsignedTypes
 val shapes = lazy { AppShapes() }.value

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Files
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import ru.serdjuk.zxsna.app.component.ui.palette.PaletteUtils
-import ru.serdjuk.zxsna.app.component.ui.windows.Timeline
 import ru.serdjuk.zxsna.app.utils.currentBackgroundColor
 import ru.serdjuk.zxsna.app.utils.isActorExists
 import java.io.File
@@ -42,20 +41,9 @@ class ImageSystem : ISystem {
         }
     }
 
-    override fun setSystem() {
-        currentBackgroundColor.set(backgroundColor)
-        isVisible = true
-    }
 
-    override fun resetSystem() {
-        isVisible = false
-    }
 
-    private fun showTimeline() {
-        if (!isActorExists<Timeline>()) {
-            Timeline()
-        }
-    }
+
 
 //    private fun imageSequenceToNextVideoFile() {
 //        if (sequenceSize == 1) {

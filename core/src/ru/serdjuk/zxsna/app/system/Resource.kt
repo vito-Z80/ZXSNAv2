@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import ru.serdjuk.zxsna.app.resources.TextureLayer
+import ru.serdjuk.zxsna.app.component.world.layers.TextureLayer
 
 @ExperimentalUnsignedTypes
 class Resource {
@@ -27,7 +27,6 @@ class Resource {
         t.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
         t
     }.value
-    val text = null
     val layers = Array<TextureLayer>(16) { TextureLayer(1024, 1024) }
 
 

@@ -2,15 +2,23 @@ package ru.serdjuk.zxsna.app.component.ui.windows
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.PopupMenu
 import ru.serdjuk.zxsna.app.component.ui.UI
+import ru.serdjuk.zxsna.app.component.ui.debug.AppDebug
+import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
+import ru.serdjuk.zxsna.app.utils.WindowOutScreen
+import ru.serdjuk.zxsna.app.component.ui.tools.AppToolsWindow
 import ru.serdjuk.zxsna.app.system.ImageSystem
 import ru.serdjuk.zxsna.app.system.file
 import ru.serdjuk.zxsna.app.system.module
+import ru.serdjuk.zxsna.app.system.pack.packer
 import ru.serdjuk.zxsna.app.system.system
 
 @ExperimentalUnsignedTypes
@@ -25,6 +33,7 @@ class MainMenu : Image() {
     private val levelEditorButton = TextButton(" Level editor", module.skin)
 
     private val popupFile = PopupMenu()
+    private val popupWindow = PopupMenu()
     private val sprite = SpriteDrawable(Sprite(module.skin.getRegion(UI.GRADIENT_GG)))
 
     init {
@@ -33,7 +42,7 @@ class MainMenu : Image() {
         imageSystemButton.pack()
 
 
-        buttonGroup.add(imageSystemButton,  spriteEditorButton, levelEditorButton)
+        buttonGroup.add(imageSystemButton, spriteEditorButton, levelEditorButton)
         buttonGroup.uncheckAll()
 
         setDrawableBounds()
@@ -41,6 +50,7 @@ class MainMenu : Image() {
         pack()
 
         module.stage.addActor(this)
+
 
 
         table.pad(1f)
@@ -52,7 +62,8 @@ class MainMenu : Image() {
         table.pack()
         module.stage.addActor(table)
 
-        createPopups()
+        createFilePopup()
+        createWindowsPopUp()
         menuListeners()
     }
 
@@ -70,18 +81,58 @@ class MainMenu : Image() {
         super.act(delta)
     }
 
-    private fun createPopups() {
+    private fun createFilePopup() {
         val loadImage = MenuItem("Load image`s")
         loadImage.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                imageSystemButton.isChecked = true
-                val imageSystem = system.display<ImageSystem>(true)?:return
-                imageSystem.setSystem()
+//                val imageSystem = system.display<ImageSystem>(true) ?: return
+                val imageSystem = system.set<ImageSystem>(true) ?: return
                 file.loadImagesSequence()
             }
         })
-
         popupFile.addItem(loadImage)
+
+        val saveProject = MenuItem("Save project")
+        saveProject.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                lazy {
+//                    file.saveProject(projectCompression.compress(), additionToFileName = "_Project", extension = ".snp")
+//                    file.saveProject(packCollector.collect(), additionToFileName = "_Project", extension = ".snp")
+                    file.saveProject(packer.compress(), additionToFileName = "_Project", extension = ".snp")
+                }.value
+//                file.saveProject(project.compressProject(), additionToFileName = "_Project", extension = ".snp")
+            }
+        })
+
+        popupFile.addItem(saveProject)
+
+        val loadProject = MenuItem("Load project")
+        loadProject.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+
+                lazy {
+
+                    packer.decompress(file.loadProject())
+//                    packCollector.parse(file.loadProject())
+                }.value
+//                projectCompression.uncompress(file.loadProject())
+
+//                project.unCompressProject(file.loadProject())
+            }
+        })
+
+        popupFile.addItem(loadProject)
+
+        val saveZXN = MenuItem("Save")
+        saveZXN.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                TODO("Save zx spectrum next files: sprites,tiles,palettes,maps,info")
+            }
+        })
+        popupFile.addItem(saveZXN)
+
+
     }
 
     private fun menuListeners() {
@@ -93,6 +144,14 @@ class MainMenu : Image() {
             }
         })
 
+        windowsButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                windowsButton.isChecked = false
+                popupWindow.zIndex = Int.MAX_VALUE - 1
+                popupWindow.showMenu(module.stage, windowsButton.x, y)
+            }
+        })
+
 //        imageSystemButton.addListener(object : ChangeListener() {
 //            override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                imageSystemButton.isChecked = !imageSystemButton.isChecked
@@ -100,5 +159,44 @@ class MainMenu : Image() {
 //            }
 //        })
     }
+
+
+    private fun createWindowsPopUp() {
+        val palette = MenuItem("Palette")
+        palette.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                windowsCollector<AppPaletteWindow>()
+            }
+        })
+        popupWindow.addItem(palette)
+
+        val debugWindow = MenuItem("Debug window")
+        debugWindow.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                windowsCollector<AppDebug>()
+            }
+        })
+        popupWindow.addItem(debugWindow)
+
+        val toolsWindow = MenuItem("Tools")
+        toolsWindow.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                windowsCollector<AppToolsWindow>()
+            }
+        })
+
+        popupWindow.addItem(toolsWindow)
+
+    }
+
+    /**
+     * Find a <T> window if it exists, or new instance of <T> window.
+     * after, window.toCenter()
+     */
+    inline fun <reified T> windowsCollector() {
+        module.stage.root.findActor<WindowOutScreen>(T::class.java.name)?.toCenter()
+                ?: (T::class.java.newInstance() as WindowOutScreen).toCenter()
+    }
+
 
 }

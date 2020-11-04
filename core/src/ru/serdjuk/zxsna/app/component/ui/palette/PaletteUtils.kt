@@ -4,62 +4,53 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
 import ru.serdjuk.zxsna.app.resources.hexColor256
 import ru.serdjuk.zxsna.app.resources.hexColor512
 import ru.serdjuk.zxsna.app.system.res
-import ru.serdjuk.zxsna.app.system.sensor
 import kotlin.math.abs
 import kotlin.math.min
 
 @ExperimentalUnsignedTypes
 object PaletteUtils {
 
-    private val colorsNumber = hexColor512.size
 
-    // границы ячеек палитры относительно актера.
-    val actorBounds = Array<Rectangle>(colorsNumber) {
-        val x = PaletteData.space + (it and 15) * PaletteData.cellSize + PaletteData.space * (it and 15)
-        val y = PaletteData.space + (it and 496) + PaletteData.space * ((it and 496) / 16)
-        Rectangle(x.toFloat(), y.toFloat(), PaletteData.cellSize.toFloat(), PaletteData.cellSize.toFloat())
-    }
-
-
-    fun convertSavePalette(): ByteArray {
-        val result = com.badlogic.gdx.utils.ByteArray()
-        val ba = com.badlogic.gdx.utils.ByteArray()
-        Array<String>(16) {
-            val str = StringBuilder()
-            ba.clear()
-            repeat(16) { digit ->
-                val c = convertTo9bpp(PaletteData.paletteTables.userTable[it * 16 + digit].colorId)
-                val bit9 = c and 256 shr 8
-                val byte = c and 255
-                // TODO add hex variation
-                str.append("$byte, $bit9, ")
-                ba.add(byte.toByte(), bit9.toByte())
-            }
-            result.addAll(ba)
-            str.toString()
-        }
-        return result.toArray()
-    }
-
-    @ExperimentalUnsignedTypes
-    fun convertLoadPalette(byteArray: ByteArray) {
-        // если бит 9bpp включен то умножаем первый байт на 2 + 1
-        PaletteData.paletteTables.userTable.forEachIndexed { id, cell ->
-            val colorId = if (byteArray[id * 2 + 1].toUByte().toInt() == 0) {
-                byteArray[id * 2].toUByte().toInt() * 2
-            } else {
-                byteArray[id * 2].toUByte().toInt() * 2 + 1
-            }
-            cell.colorId = colorId
-            cell.hexColor = hexColor512[colorId].hex
-            drawCellFill(PaletteData.paletteTables.userTable[id], hexColor512[colorId].int)
-        }
-        res.textureUpdate()
-    }
+//    fun convertPaletteTo(): ByteArray {
+//        val result = com.badlogic.gdx.utils.ByteArray()
+//        val ba = com.badlogic.gdx.utils.ByteArray()
+//        Array<String>(16) {
+//            val str = StringBuilder()
+//            ba.clear()
+//            repeat(16) { index ->
+//                val c = convertTo9bpp(PaletteData.paletteTables.userTable[it * 16 + index].colorId)
+//                val bit9 = c and 256 shr 8
+//                val byte = c and 255
+//                // TODO add hex variation
+//                str.append("$byte, $bit9, ")
+//                ba.add(byte.toByte(), bit9.toByte())
+//            }
+//            result.addAll(ba)
+//            str.toString()
+//        }
+//        return result.toArray()
+//    }
+//
+//    fun convertPaletteFrom(byteArray: ByteArray) {
+////        PaletteData.paletteTables.userRegion.flip(false,true)
+//        // если бит 9bpp включен то умножаем первый байт на 2 + 1
+//        PaletteData.paletteTables.userTable.forEachIndexed { id, cell ->
+//            val colorId = if (byteArray[id * 2 + 1].toUByte().toInt() == 0) {
+//                byteArray[id * 2].toUByte().toInt() * 2
+//            } else {
+//                byteArray[id * 2].toUByte().toInt() * 2 + 1
+//            }
+//            cell.colorId = colorId
+//            cell.hexColor = hexColor512[colorId].hex
+//            drawCellFill(PaletteData.paletteTables.userTable[id], hexColor512[colorId].int)
+//        }
+////        PaletteData.paletteTables.userRegion.flip(false,true)
+//
+//        res.textureUpdate()
+//    }
 
     fun convertImage(encodedData: ByteArray, colorsNumber: Int) {
         res.disposeUploadImage()
@@ -146,41 +137,13 @@ object PaletteUtils {
         }
     }
 
-    private fun drawCellFill(cell: PaletteCell, colorInt: Int) {
-        res.pixmap.setColor(colorInt)
-        res.pixmap.fillRectangle(
-                cell.textureRegion.regionX,
-                cell.textureRegion.regionY,
-                cell.textureRegion.regionWidth,
-                cell.textureRegion.regionHeight
-        )
 
-    }
 
     // индекс цвета делится на 2 и если есть остаток то включить бит для 9bpp
     private fun convertTo9bpp(colorId: Int) = (colorId / 2) or (colorId % 2 shl 8)
 
 
-    // получить ячейку палитры или -1
-    fun getCellId(x: Float, y: Float): Int {
-        for (cell in sensor.paletteOffset * 16..sensor.paletteOffset * 16 + 15) {
-            if (actorBounds[cell].contains(x, y)) {
-                return cell
-            }
-        }
-        return -1
-    }
-
-    fun getCellPosition(x: Float, y: Float): Vector2? {
-        actorBounds.forEach regionId@{ rectangle ->
-            if (rectangle.contains(x, y)) {
-                return Vector2(rectangle.x, rectangle.y)
-            }
-        }
-        return null
-    }
-
-
+    // not used, be removed
     fun convertImageArea(bounds: Rectangle, colorsNumber: Int): ByteArray {
 
         val byteArray = ByteArray((bounds.height * bounds.width).toInt())

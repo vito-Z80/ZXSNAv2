@@ -17,15 +17,15 @@ object PaletteData {
     var hexColor = "0"
     val color = Color(0)
 
-    var space = 1
-    var cellSize = 16
-    private val width = 16
-    fun tableWidth() = width * cellSize + space * cellSize + space
-    fun tableHeight256() = tableWidth()
-    fun tableHeight512() = tableWidth() * 2
+//    var space = 1
+//    var cellSize = 16
+//    private val width = 16
+//    fun tableWidth() = width * cellSize + space * cellSize + space
+//    fun tableHeight256() = tableWidth()
+//    fun tableHeight512() = tableWidth() * 2 - 1
 
     //  create palette textures and tables
-    val paletteTables = PaletteTexturesCreator()
+//    val paletteTables = PaletteTexturesCreator()
 
 //    fun setColor(color: Int) {
 //        colorInt = color
@@ -36,9 +36,9 @@ object PaletteData {
 
     fun setColor(colorId: Int) {
         intColor = hexColor512[colorId].int
-        this.colorId = colorId
+        PaletteData.colorId = colorId
         hexColor = hexColor512[colorId].hex
-        this.color.set(intColor)
+        color.set(intColor)
     }
 
 }

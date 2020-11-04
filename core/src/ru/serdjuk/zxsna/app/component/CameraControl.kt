@@ -9,6 +9,7 @@ import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.sensor
 
 
+@ExperimentalUnsignedTypes
 class CameraControl() {
 
     val camera = module.worldCamera
@@ -23,11 +24,12 @@ class CameraControl() {
 
     fun install() {
         val listener = object : ClickListener() {
-            override fun scrolled(event: InputEvent?, x: Float, y: Float, amount: Int): Boolean {
-                sensor.mouseWheel = amount
-                this@CameraControl.amount = MathUtils.clamp(this@CameraControl.amount + amount, -10f, 10f)
-                return super.scrolled(event, x, y, amount)
+            override fun scrolled(event: InputEvent?, x: Float, y: Float, amountX: Float, amountY: Float): Boolean {
+                sensor.mouseWheel = amountY.toInt()
+                this@CameraControl.amount = MathUtils.clamp(this@CameraControl.amount + amountY, -10f, 10f)
+                return super.scrolled(event, x, y, amountX, amountY)
             }
+
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 touchPoint.set(sensor.worldMouse)

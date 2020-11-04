@@ -1,7 +1,5 @@
 package ru.serdjuk.zxsna.app.system
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-
 interface ISystem {
 
 
@@ -11,9 +9,4 @@ interface ISystem {
     fun update(delta: Float)
     fun draw()
 
-    // включить систему
-    fun setSystem()
-
-    // выключить систему
-    fun resetSystem()
 }

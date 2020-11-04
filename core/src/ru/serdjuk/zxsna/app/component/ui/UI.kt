@@ -2,7 +2,6 @@ package ru.serdjuk.zxsna.app.component.ui
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -12,30 +11,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.kotcrab.vis.ui.Sizes
 import com.kotcrab.vis.ui.widget.*
 import com.kotcrab.vis.ui.widget.Tooltip
-import com.kotcrab.vis.ui.widget.file.FileChooser
-import com.kotcrab.vis.ui.widget.file.FileChooserStyle
 import net.dermetfan.gdx.scenes.scene2d.ui.ListFileChooser
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.sensor
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteManager
-import ru.serdjuk.zxsna.app.component.ui.windows.AppDebug
 
 @ExperimentalUnsignedTypes
 class UI {
 
     companion object {
         const val DEFAULT = "default"
-        const val DEFAULT_PANE9 = "defaultPane9"
+        const val APP_WINDOW = "defaultPane9"
         const val DRAGGED_PANE = "titlePane9"
         const val SETTINGS_ICON = "settingsIcon"
         const val CHECK_ON = "checkOnIcon"
         const val CHECK_OFF = "checkOffIcon"
         const val ARROW_16x8 = "arrow16x8"
         const val DOUBLE_ARROW_LEFT = "doubleArrow"
-        const val DOUBLE_ARROW_RIGHT = "doubleArrow"
+        const val DOUBLE_ARROW_RIGHT = "doubleArrow"    // FIXME она тоже левая. Либо flip от спрайта либо добавить перевернутый
         const val SQUAD_ICON = "squadIcon"
         const val ARROW_DOWN = "arrowDown"
+//        const val ARROW_UP = "arrowUp"
 
         const val FONT_16 = "font_16_java"
 
@@ -68,8 +64,11 @@ class UI {
 
         const val USER_PALETTE = "userPalette"
         const val MAIN_PALETTE = "mainPalette"
-        const val TRANSPARENT_OVERLAY = "transparentOverlay"
+        const val OVERLAY_PANEL = "transparentOverlay"
         const val LEVITATION_CELL = "levitationCell"
+        const val HIGHLIGHT_CELL = "highlightCell"
+        const val WHITE_CELL = "whiteCell"
+        const val USER_COLOR = "userColor"
 
         const val EMPTY_8X8 = "empty8x8"
 
@@ -177,12 +176,12 @@ class UI {
         skin.add(BUTTON_OFF, NinePatch(buttonOff, buttonOffSplits[0], buttonOffSplits[1], buttonOffSplits[2], buttonOffSplits[3]), NinePatch::class.java)
 
 
-        val region = atlas.findRegion(DEFAULT_PANE9)
+        val region = atlas.findRegion(APP_WINDOW)
         val s = region.splits
-        skin.add(DEFAULT_PANE9, NinePatch(region, s[0], s[1], s[2], s[3]), NinePatch::class.java)
+        skin.add(APP_WINDOW, NinePatch(region, s[0], s[1], s[2], s[3]), NinePatch::class.java)
 
 
-        val window = Window.WindowStyle(skin.getFont(DEFAULT), Color.BLACK, skin.getDrawable(DEFAULT_PANE9))
+        val window = Window.WindowStyle(skin.getFont(DEFAULT), Color.BLACK, skin.getDrawable(APP_WINDOW))
         skin.add(DEFAULT, window, Window.WindowStyle::class.java)
 
         val label = Label.LabelStyle(skin.getFont(FONT_16), Color.BLACK)
@@ -224,7 +223,7 @@ class UI {
         lfc.space = 2f
         lfc.setButtonStyles(skin.get(DEFAULT, Button.ButtonStyle::class.java))
         lfc.pathFieldStyle = skin.get(DEFAULT, TextField.TextFieldStyle::class.java)
-        lfc.background = skin.getDrawable(DEFAULT_PANE9)
+        lfc.background = skin.getDrawable(APP_WINDOW)
         lfc.contentsStyle = skin.get(DEFAULT, List.ListStyle::class.java)
         lfc.contentsPaneStyle = skin.get(DEFAULT, ScrollPane.ScrollPaneStyle::class.java)
         skin.add(DEFAULT, lfc, ListFileChooser.Style::class.java)
@@ -259,10 +258,11 @@ class UI {
 
     private fun buttons() {
         val b = Button.ButtonStyle()
-        b.over = skin.getDrawable(LIGHT_GRAY)
+        b.up = skin.getDrawable(DARK_GRAY)
+        b.over = skin.getDrawable(DARK_GRAY)
         b.disabled = skin.getDrawable(LIGHT_GRAY)
         b.checkedOver = skin.getDrawable(LIGHT_GRAY)
-        b.checked = skin.getDrawable(LIGHT_GRAY)
+        b.checked = skin.getDrawable(BLACK)
         b.down = skin.getDrawable(LIGHT_GRAY)
         b.focused = skin.getDrawable(LIGHT_GRAY)
         b.checkedFocused = skin.getDrawable(LIGHT_GRAY)
@@ -336,6 +336,20 @@ class UI {
         sp.vScrollKnob = skin.getDrawable(GRADIENT_GG)
         skin.add(DEFAULT, sp, ScrollPane.ScrollPaneStyle::class.java)
 
+
+        val slider = Slider.SliderStyle()
+        slider.knob = skin.getDrawable(BORDER)
+        slider.knobDown = skin.getDrawable(CHECK_OFF)
+        slider.knobOver = skin.getDrawable(CHECK_ON)
+
+        slider.background = skin.getDrawable(GRADIENT_GG)
+        slider.knobAfter = skin.getDrawable(BUTTON_ON)
+        slider.knobBefore = skin.getDrawable(BUTTON_OFF)
+        skin.add("default-horizontal", slider, Slider.SliderStyle::class.java)
+
+
+        // TODO создать слайдер
+
     }
 
 
@@ -379,4 +393,5 @@ class UI {
 
 }
 
+@ExperimentalUnsignedTypes
 val ui = lazy { UI() }.value

@@ -1,23 +1,19 @@
 package ru.serdjuk.zxsna.app.utils
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteData
-import ru.serdjuk.zxsna.app.resources.hexColor512
+import ru.serdjuk.zxsna.app.system.compression.Compression
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.sensor
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
-val worldMouseDown = Vector2(-100f, -100f)
+private val worldMouseDown = Vector2(-100f, -100f)
+val tmp2Position = Vector2()
 
 @ExperimentalUnsignedTypes
 fun buttonHold(key: Int): Boolean {
@@ -45,8 +41,20 @@ fun buttonUp(button: Int): Boolean {
 fun keyHold(key: Int) = Gdx.input.isKeyPressed(key)
 fun keyOnce(key: Int) = Gdx.input.isKeyJustPressed(key)
 
+private val amountPosition = Vector2()
+fun calculateAmount(position: Vector2, previousPosition: Vector2) =
+        amountPosition.set(previousPosition.x - position.x, previousPosition.y - position.y)
+
+fun calculateAmount(positionX: Float, positionY: Float, previousPositionX: Float, previousPositionY: Float) =
+        amountPosition.set(previousPositionX - positionX, previousPositionY - positionY)
+
+
 @ExperimentalUnsignedTypes
 inline fun <reified T> isActorExists() = module.stage.root.children?.any { it is T } ?: false
+
+inline fun <reified T> getCompressionClass(compression: Compression): T = compression as T
+inline fun <reified T> isCompressionClass(compression: Compression): Boolean = compression is T
+
 
 @ExperimentalUnsignedTypes
 fun outActor() = module.stage.root.hit(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), true) == null
@@ -57,4 +65,52 @@ fun Color.toInt(): Int {
 
 val currentBackgroundColor = Color(0.2f, 0.2f, 0.2f, 1f)
 
+// получить бафты от инта
+fun getBytes(other: Int) = ByteArray(4) { (other ushr (it * 8) and 255).toByte() }.also { it.reverse() }
+
+// получить ИНТ из 4-х байт
+@ExperimentalUnsignedTypes
+fun getInt(bytes: ByteArray) = (bytes[0].toUByte().toInt() shl 24) or (bytes[1].toUByte().toInt() shl 16) or
+        (bytes[2].toUByte().toInt() shl 8) or (bytes[3].toUByte().toInt())
+
+@ExperimentalUnsignedTypes
+fun toIntArray(byteArray: ByteArray) = IntArray(byteArray.size / Int.SIZE_BYTES) {
+    getInt(byteArray.copyOfRange(it * Int.SIZE_BYTES, it * Int.SIZE_BYTES + Int.SIZE_BYTES))
+}
+
+
+// обновить соординаты ректангла путем прибавления
+fun Rectangle.addPosition(position: Vector2) {
+    this.x += position.x
+    this.y += position.y
+}
+
+fun Rectangle.addPosition(x: Float, y: Float) {
+    this.x += x
+    this.y += y
+}
+
+
+
+
+// resource creator  FIXME оставить и доработать  ? спецефичная вещь хз нужна ли...
+/**
+ * add colored rectangle to UI and atlas
+ * @param size
+ */
+@ExperimentalUnsignedTypes
+fun createResource(size: Int, color: Color, name: String, fill: Boolean = true): TextureRegion {
+    val position = module.atlasUtils.getFreePosition(size, size)
+    return TextureRegion(res.texture, position.x.toInt(), position.y.toInt(), size, size).also {
+        res.pixmap.setColor(color)
+        if (fill) {
+            res.pixmap.fillRectangle(position.x.toInt(), position.y.toInt(), size, size)
+        } else {
+            res.pixmap.drawRectangle(position.x.toInt(), position.y.toInt(), size, size)
+        }
+        module.skin.add(name, it, TextureRegion::class.java)
+        res.atlas.addRegion(name, it)
+        res.texture.draw(res.pixmap, 0, 0)
+    }
+}
 
