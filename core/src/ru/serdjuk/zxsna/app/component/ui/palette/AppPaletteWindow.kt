@@ -9,29 +9,32 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
-import ru.serdjuk.zxsna.app.AppZXSNA
+import com.kotcrab.vis.ui.widget.MenuItem
+import com.kotcrab.vis.ui.widget.PopupMenu
+import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.component.ui.UI
+import ru.serdjuk.zxsna.app.component.world.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.resources.hexColor512
-import ru.serdjuk.zxsna.app.system.file
-import ru.serdjuk.zxsna.app.system.module
-import ru.serdjuk.zxsna.app.system.pack.Compressable
-import ru.serdjuk.zxsna.app.system.res
+import ru.serdjuk.zxsna.app.system.*
 import ru.serdjuk.zxsna.app.utils.*
 
 @ExperimentalUnsignedTypes
-class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
+class AppPaletteWindow : WindowOutScreen("Palette"), Packable {
+
 
     private val pixmap = res.pixmap
     private val texture = res.texture
     private val atlasUtils = module.atlasUtils
 
-    private var userPaletteColspan = 6
+    private var userPaletteColspan = 7
     private val previousMousePosition = Vector2()
     private val amount = Vector2()
     private var isTextureUpdate = false
@@ -49,25 +52,63 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
         Rectangle(x.toFloat(), y.toFloat(), cellSize.toFloat(), cellSize.toFloat())
     }
 
-    private val userPalettePosition = atlasUtils.getFreePosition(tableWidth(), tableHeight256()).also {
-        pixmap.setColor(Color.SLATE)
-        pixmap.fillRectangle(it.x.toInt(), it.y.toInt(), tableWidth(), tableHeight256())
-    }
+    /**
+     * имена палитр для добавления в атлас и в скин
+     */
+    private val paletteNames = arrayOf(
+            UI.SPRITE_PALETTE_4BPP, UI.TILE_PALETTE_4BPP, UI.SPRITE_PALETTE_9BPP, UI.TILE_PALETTE_9BPP
+    )
 
-    // user palette table 4bpp from 9bpp (512 colors)
-    private val userPaletteUnits = Array<PaletteUnit>(256) {
-        val x = userPalettePosition.x.toInt() + (it and 15) * PaletteUnit.size + space * (it and 15)
-        val y = userPalettePosition.y.toInt() + (it and 240) + space * ((it and 240) / 16)
-        val color = hexColor512[455].int
-        val region = TextureRegion(texture, x + 1, y + 1, PaletteUnit.size, PaletteUnit.size)
-        val cell = PaletteUnit(color, region)
-        cell.upgrade(color)
-        cell
-    }
-    private val userPaletteRegion = TextureRegion(texture, userPalettePosition.x.toInt(), userPalettePosition.y.toInt(), tableWidth(), tableHeight256()).also {
-        module.skin.add(UI.USER_PALETTE, it, TextureRegion::class.java)
-        res.atlas.addRegion(UI.USER_PALETTE, it)
-    }
+    /**
+     * Хранилище ЧЕТЫРЕХ палитр 2x4bpp `n` 2x9bpp
+     */
+
+//    private val userPaletteStorage = Array<UserPalette>(4) { userPaletteId ->
+//        // получить место под палитру в текстуре атласа и координаты региона в атласе
+//        val position = atlasUtils.getFreePosition(tableWidth(), tableHeight256())
+//        pixmap.setColor(Color.SLATE)
+//        pixmap.fillRectangle(position.x.toInt(), position.y.toInt(), tableWidth(), tableHeight256()
+//        )
+//        // заполнить палитру ячейками, создать коллекцию ячеек данной палитры PaletteUnit
+//        val cells = Array<PaletteUnit>(256) {
+//            val x = position.x.toInt() + (it and 15) * PaletteUnit.size + space * (it and 15)
+//            val y = position.y.toInt() + (it and 240) + space * ((it and 240) / 16)
+////            val color = hexColor512[455].int
+//            val color = hexColor512[MathUtils.random(userPaletteId * 8, userPaletteId * 16)].int
+//            val region = TextureRegion(texture, x + 1, y + 1, PaletteUnit.size, PaletteUnit.size)
+//            val cell = PaletteUnit(color, region)
+//            cell.upgrade(color)
+//            cell
+//        }
+//        // добавить регион палитры а атлас и в скин
+//        val region = TextureRegion(texture, position.x.toInt(), position.y.toInt(), tableWidth(), tableHeight256()).also {
+//            module.skin.add(paletteNames[userPaletteId], it, TextureRegion::class.java)
+//            res.atlas.addRegion(paletteNames[userPaletteId], it)
+//        }
+//        val palette = UserPalette( userPaletteId)
+//        palette
+//    }
+
+
+//    private val userPalettePosition = atlasUtils.getFreePosition(tableWidth(), tableHeight256()).also {
+//        pixmap.setColor(Color.SLATE)
+//        pixmap.fillRectangle(it.x.toInt(), it.y.toInt(), tableWidth(), tableHeight256())
+//    }
+//
+//    // user palette table 4bpp from 9bpp (512 colors)
+//    private val userPaletteUnits = Array<PaletteUnit>(256) {
+//        val x = userPalettePosition.x.toInt() + (it and 15) * PaletteUnit.size + space * (it and 15)
+//        val y = userPalettePosition.y.toInt() + (it and 240) + space * ((it and 240) / 16)
+//        val color = hexColor512[455].int
+//        val region = TextureRegion(texture, x + 1, y + 1, PaletteUnit.size, PaletteUnit.size)
+//        val cell = PaletteUnit(color, region)
+//        cell.upgrade(color)
+//        cell
+//    }
+//    private val userPaletteRegion = TextureRegion(texture, userPalettePosition.x.toInt(), userPalettePosition.y.toInt(), tableWidth(), tableHeight256()).also {
+//        module.skin.add(UI.SPRITE_PALETTE_4BPP, it, TextureRegion::class.java)
+//        res.atlas.addRegion(UI.SPRITE_PALETTE_4BPP, it)
+//    }
 
     private val mainPalettePosition = atlasUtils.getFreePosition(tableWidth(), tableHeight512()).also {
         pixmap.setColor(Color.SLATE)
@@ -103,7 +144,12 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
 
     private val settingsGroup = Table()
 
-    private val userPaletteImage = Image(userPaletteRegion)
+    // TODO эта куета еще не проинициализировалась а мы ее тащим из UserPalette (йобаный круговорот)
+    private val userPaletteImage = lazy {
+        UserPalette.storage.add(UserPalette4bppSprites(0))
+        UserPalette.storage[0]
+
+    }.value
     private val mainPaletteImage = Image(mainPaletteRegion)
 
     private val userPaletteCell = add(userPaletteImage).colspan(userPaletteColspan).padRight(2f).top()
@@ -191,7 +237,18 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
         var userIntColor: Int? = null   // цвет выбранный юзером для рисования
         val space = 1       // расстояние между ячейками палитры (думаю не давать менять юзеру)
         var offset = 0      // смещение 16-цветной палитры. Так-же этим смещением обозначается полотно (слой пользователя для рисования)
-        var cellSize = 16
+        var cellSize = 16   // физический размер ячейки палитры
+        var belong = 0      // принадлежность палитры (4bpp/9bpp)
+    }
+
+    /**
+     * Принадлежность палитры к:
+     */
+    object Belongingness {
+        const val SPRITES_4BPP = 0
+        const val TILES_4BPP = 1
+        const val SPRITES_9BPP = 2
+        const val TILES_9BPP = 3
     }
 
 
@@ -247,6 +304,7 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
 
         res.textureUpdate()
 
+        system.set<AppLayersSystem>(true)
     }
 
     private fun createSettings() {
@@ -327,13 +385,11 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
         offsetDownButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 offset = MathUtils.clamp(--offset, 0, 15)
-//                offsetLabel.setText(offset.toString(10))
             }
         })
         offsetUpButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 offset = MathUtils.clamp(++offset, 0, 15)
-//                offsetLabel.setText(offset.toString(10))
             }
         })
 
@@ -362,10 +418,61 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
         })
 
 
+        // иконка смены палитры
+        val paletteChanger = TextButton("S4B", module.skin)
+        paletteChanger.addListener(object : ChangeListener() {
+            val popupWindow = PopupMenu()
+            val item1 = MenuItem("Sprites 4 bpp")
+            val item2 = MenuItem("Tiles 4 bpp")
+            val item3 = MenuItem("Sprites 9 bpp")
+            val item4 = MenuItem("Tiles 9 bpp")
+
+            init {
+                item1.addListener(itemListener(Belongingness.SPRITES_4BPP, item1).invoke())
+                item2.addListener(itemListener(Belongingness.TILES_4BPP, item2).invoke())
+                item3.addListener(itemListener(Belongingness.SPRITES_9BPP, item3).invoke())
+                item4.addListener(itemListener(Belongingness.TILES_9BPP, item4).invoke())
+                popupWindow.addItem(item1)
+                popupWindow.addItem(item2)
+                popupWindow.addItem(item3)
+                popupWindow.addItem(item4)
+                popupWindow.pack()
+            }
+
+            // листенер итемов
+            private fun itemListener(belong: Int, item: MenuItem): () -> ChangeListener = {
+                object : ChangeListener() {
+                    override fun changed(event: ChangeEvent?, actor: Actor?) {
+                        AppPaletteWindow.belong = belong
+                        val palName = item.text.split(" ")
+                        val newName = StringBuilder()
+                        repeat(palName.size) { loop ->
+                            newName.append(palName[loop].first().toUpperCase())
+                        }
+                        paletteChanger.setText(newName.toString())
+                        // visual change palette
+                        (userPaletteImage.drawable as TextureRegionDrawable).region.setRegion(
+//                                userPaletteStorage[belong].region   // вот так не отображает первую палитру [id=0] я хуй пойми почему
+                                res.atlas.findRegion(paletteNames[belong])
+                        )
+                    }
+                }
+            }
+
+
+            // листенер иконки палитр
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                popupWindow.showMenu(module.stage, sensor.screenMouse.x, sensor.screenMouse.y)
+            }
+        })
+
+
+
         add(userColorInfo).width(56f)
         add(offsetUpButton).right().width(16f)
         add(offsetDownButton).left().width(16f)
         add(offsetLabel).left().width(16f)
+        add(paletteChanger).width(48f)
         add(minMaxButton).fillX()
         add(mainPaletteDisplayButton).right()
 
@@ -462,7 +569,7 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
     private fun determineSelectedColor() {
 
         val cellId = offsetIndexes[offset]
-        val pixelColor = userPaletteUnits[cellId].intColor
+        val pixelColor = UserPalette.storage[belong].cells[cellId].intColor
         highlightUserColorImage.color.set(pixelColor)
         highlightUserColorImage.setPosition(
                 actorBounds[cellId].x + userPaletteImage.x,
@@ -608,9 +715,9 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
                 tmp2Position.y = userPaletteImage.height - tmp2Position.y
 //                val cellId = PaletteUtils.actorBounds.indexOfFirst { it.contains(tmp2Position) }
                 val cellId = getCellIdByOffset(tmp2Position.x, tmp2Position.y)
-                if (cellId > -1 && cellId < userPaletteUnits.size) {
-                    val regionPositionX = userPaletteUnits[cellId].unitRegion.regionX
-                    val regionPositionY = userPaletteUnits[cellId].unitRegion.regionY
+                if (cellId > -1 && cellId < UserPalette.storage[belong].cells.size) {
+                    val regionPositionX = UserPalette.storage[belong].cells[cellId].unitRegion.regionX
+                    val regionPositionY = UserPalette.storage[belong].cells[cellId].unitRegion.regionY
                     res.pixmap.drawPixmap(
                             res.pixmap,
                             regionPositionX, regionPositionY,
@@ -620,7 +727,7 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
                             movableCellRegion.regionHeight
                     )
                     val color = res.pixmap.getPixel(regionPositionX + 1, regionPositionY + 1)
-                    userPaletteUnits[cellId].intColor = color
+                    UserPalette.storage[belong].cells[cellId].intColor = color
                     isTextureUpdate = true
                 }
             }
@@ -664,7 +771,7 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
             val str = StringBuilder()
             ba.clear()
             repeat(16) { index ->
-                val c = convertTo9bpp(userPaletteUnits[it * 16 + index].colorId())
+                val c = convertTo9bpp(UserPalette.storage[belong].cells[it * 16 + index].colorId())
                 val bit9 = c and 256 shr 8
                 val byte = c and 255
                 // TODO add hex variation
@@ -683,7 +790,7 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
     private fun convertPaletteFrom(byteArray: ByteArray) {
         // for load palette
         // если бит 9 включен то умножаем первый байт на 2 + 1
-        userPaletteUnits.forEachIndexed { id, cell ->
+        UserPalette.storage[belong].cells.forEachIndexed { id, cell ->
             val colorId = if (byteArray[id * 2 + 1].toUByte().toInt() == 0) {
                 byteArray[id * 2].toUByte().toInt() * 2
             } else {
@@ -693,26 +800,6 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
         }
     }
 
-
-    /**
-     * FOR COMPRESS
-     *
-     *
-     * склееваем в один массив следущее:
-     * палитру (PaletteUnit.intColor), текущее смещение (offset), массив смещений (offsetIndexed)
-     */
-    override fun compress(): ByteArray {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * UNCOMPRESS
-     * распихиваем из массива в том же порядке что и пихали  FOR COMPRESS
-     */
-    override fun uncompress(bytes: ByteArray) {
-        TODO("Not yet implemented")
-    }
-
     /**
      * etc...
      */
@@ -720,5 +807,50 @@ class AppPaletteWindow : WindowOutScreen("Palette"), Compressable, AppZXSNA {
     private fun tableWidth() = 16 * cellSize + space * cellSize + space
     private fun tableHeight256() = tableWidth()
     private fun tableHeight512() = tableWidth() * 2 - 1
+
+    /**
+     * FOR COMPRESS
+     *
+     *
+     * склееваем в один массив следущее:
+     * offset
+     * offsetIndexed
+     * color ID`s from general palette
+     *
+     * палитру (PaletteUnit.intColor), текущее смещение (offset), массив смещений (offsetIndexed)
+     * TODO добавить позицию окна палитры относительно размера окна приложения в %
+     * TODO видимость основной палитры и общая видимость окна палитры
+     */
+    override fun collectData(): ByteArray {
+        this::class.java
+        Gdx.app.log(this::class.java.name, "Packed.")
+        val bytes = ArrayList<Byte>()
+        // offset byte (1 byte)
+        bytes.add(offset.toByte())
+        // offset indexes (16 bytes)
+        bytes.addAll(offsetIndexes.map { (it and 15).toByte() })
+
+        // palette colors id (512 bytes)
+        bytes.addAll(convertPaletteTo().toTypedArray())
+        return bytes.toByteArray()
+    }
+
+    /**
+     * распихиваем из массива в том же порядке что и пихали
+     */
+    override fun parseData(bytes: ByteArray) {
+        Gdx.app.log(this::class.java.name, "Unpacked.")
+        // offset byte (1 byte)
+        offset = bytes[0].toInt()
+        // offset indexes (16 bytes)
+        for (id in 0..15) {
+            // +1 offset from start data
+            offsetIndexes[id] = bytes[id + 1].toInt() + (id * 16)
+        }
+        // palette colors id (512 bytes)
+        convertPaletteFrom(bytes.copyOfRange(17, 17 + 512))
+        res.textureUpdate() // FIXME remove from here if parse with coroutine
+    }
+
 
 }
