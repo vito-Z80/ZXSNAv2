@@ -1,5 +1,7 @@
 package ru.serdjuk.zxsna.app.system
 
+import com.badlogic.gdx.Gdx
+
 @ExperimentalUnsignedTypes
 class AppSystem {
 

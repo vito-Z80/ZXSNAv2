@@ -2,6 +2,7 @@ package ru.serdjuk.zxsna.app.component
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -20,6 +21,7 @@ class CameraControl() {
     var scale = 1f
     private val touchPoint = Vector2()
     private val upPoint = Vector2()
+    private val bounds = Rectangle()    // TODO add bounds for camera move limit
     private var isDrag = false
 
     fun install() {
@@ -64,7 +66,7 @@ class CameraControl() {
         upgrade(delta)
     }
 
-    fun upgrade(delta: Float) {
+    private fun upgrade(delta: Float) {
         scale = MathUtils.clamp(scale + (delta * (amount * scale)), MIN_SCALE, MAX_SCALE)
 
         camera.zoom = scale
@@ -79,4 +81,5 @@ class CameraControl() {
     }
 }
 
+@ExperimentalUnsignedTypes
 val cameraControl = lazy { CameraControl() }.value.also { it.install() }

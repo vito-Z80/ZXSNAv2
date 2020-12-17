@@ -4,83 +4,90 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL30
 import ru.serdjuk.zxsna.app.component.cameraControl
-import ru.serdjuk.zxsna.app.component.component
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteUtils
-import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
+import ru.serdjuk.zxsna.app.palette.*
 import ru.serdjuk.zxsna.app.component.ui.ui
-import ru.serdjuk.zxsna.app.component.ui.windows.MainMenu
+import ru.serdjuk.zxsna.app.windows.UserSheets
+import ru.serdjuk.zxsna.app.windows.MainMenu
 import ru.serdjuk.zxsna.app.component.world.shapes
 import ru.serdjuk.zxsna.app.system.*
 import ru.serdjuk.zxsna.app.system.tiles.appSheets
 import ru.serdjuk.zxsna.app.utils.*
+import ru.serdjuk.zxsna.app.windows.AppToolTip
+import kotlin.system.measureTimeMillis
 
 @ExperimentalUnsignedTypes
 class StartZXSNA : ScreenAdapter() {
-
+    
     private val camera = module.worldCamera
     private val batch = module.worldBatch
     private val color = currentBackgroundColor
-    //    val tools = component.get<AppTools>()
-
+    
+    
+    companion object {
+        var appTime = 0L
+    }
+    
     override fun show() {
-
-
+        
         ui.install()
-        PaletteUtils
+//        PaletteUtils
         Gdx.input.inputProcessor = module.stage
-
-
-//        module.stage.addActor(Tools())
-
+        
+        
         MainMenu()
-
-
-
-
-
-
-
+        
+        UserPalette.addPalette<UserPalette4bppSprites>("4BPP Sprite palette", UserPalette4bppSprites::class.java)
+        UserPalette.addPalette<UserPalette4bppTiles>("4BPP Tile palette", UserPalette4bppTiles::class.java)
+//        UserPalette.addPalette<UserPalette9bppTiles>("9BPP Tile palette", UserPalette9bppTiles::class.java)
+//        UserPalette.addPalette<UserPalette9bppSprites>("9BPP Sprite palette", UserPalette9bppSprites::class.java)
+        
+        
+        SheetsTest()
+        
+        UserSheets()
+        
+        module.stage.addActor(AppToolTip())
+        
         super.show()
-
+        
     }
-
-
+    
+    
     override fun render(delta: Float) {
-
-
-        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
-
-//        system.update(delta)
-
-//        res.layers[AppPaletteWindow.offset].update(delta)
-        History.update()
-        sensor.screenMouse.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat())
-        if (outActor()) {
-            sensor.preMouse.set(sensor.worldMouse)
-            sensor.mouseRefresh()
-            cameraControl.update(delta)
-            system.update(delta)
-            res.layers[AppPaletteWindow.offset].update(delta)
-
-//            component.update(delta)
-        } else {
-            cameraControl.amount = 0f
+        
+        val d = 1f / 60f
+        appTime = measureTimeMillis {
+            
+            
+            Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
+            Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
+            
+            History.update()
+            sensor.screenMouseYUp.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat())
+            sensor.screenMouseYDown.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
+            if (outActor()) {
+                sensor.preMouse.set(sensor.worldMouse)
+                sensor.mouseRefresh()
+                cameraControl.update(d)
+                system.update(d)
+            } else {
+                cameraControl.amount = 0f
+            }
+            batch.projectionMatrix = camera.combined
+            batch.begin()
+            system.draw()
+            
+            batch.draw(res.texture, 0f, 0f)
+            batch.end()
+            
+            shapes.update()
+            ui.update(d)
+            
+            super.render(d)
         }
-
-        batch.projectionMatrix = camera.combined
-        batch.begin()
-        system.draw()
-//        batch.draw(res.texture, 0f, 0f)
-        batch.draw(res.layers[AppPaletteWindow.offset].region, 0f, 0f)
-        batch.end()
-
-        shapes.update()
-        ui.update(delta)
-
-        super.render(delta)
+        
     }
-
+    
     override fun resize(width: Int, height: Int) {
         module.worldViewport.update(width, height, true)
         module.uiViewport.update(width, height, true)

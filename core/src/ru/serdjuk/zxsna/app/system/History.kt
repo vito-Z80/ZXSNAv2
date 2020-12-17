@@ -1,7 +1,7 @@
 package ru.serdjuk.zxsna.app.system
 
 import com.badlogic.gdx.Input
-import ru.serdjuk.zxsna.app.component.world.tools.AppToolsSystem
+import ru.serdjuk.zxsna.app.tools.AppToolsSystem
 import ru.serdjuk.zxsna.app.utils.keyHold
 import ru.serdjuk.zxsna.app.utils.keyOnce
 import java.util.*

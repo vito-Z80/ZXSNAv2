@@ -28,13 +28,13 @@ class Packer {
 
     fun compress(): ByteArray {
         clear()
-        res.layers.forEachIndexed { id, data ->
-            data.pixmap.pixels.clear()
-            val ba = ByteArray(data.pixmap.pixels.remaining())
-            data.pixmap.pixels.get(ba)
-            data.pixmap.pixels.clear()
-            add("${PackName.SPRITE_LAYER}$id", ba, 1024, 1024)
-        }
+//        res.layers.forEachIndexed { id, data ->
+//            data.pixmap.pixels.clear()
+//            val ba = ByteArray(data.pixmap.pixels.remaining())
+//            data.pixmap.pixels.get(ba)
+//            data.pixmap.pixels.clear()
+//            add("${PackName.SPRITE_LAYER}$id", ba, 1024, 1024)
+//        }
 
         // FIXME вернуть когда разъе6емся с палитрой
 //        add(PackName.SPRITE_PALETTE, PaletteUtils.convertPaletteTo())
@@ -63,10 +63,10 @@ class Packer {
             if (it.type.contains(PackName.SPRITE_LAYER)) {
                 val id = it.type.split("_").let { l -> l[l.size - 1].toInt() }
 //                res.layers[id].pixmap.pixels.position(0)
-                res.layers[id].pixmap.pixels.put(data.copyOfRange(it.startPosition, it.endPosition))
-                res.layers[id].pixmap.pixels.clear()    // падла
-                //FIXME убрать отсюда перерисовку текстуры в случае обертывания в корутину !!!!
-                res.layers[id].redrawTexture()
+//                res.layers[id].pixmap.pixels.put(data.copyOfRange(it.startPosition, it.endPosition))
+//                res.layers[id].pixmap.pixels.clear()    // падла
+//                //FIXME убрать отсюда перерисовку текстуры в случае обертывания в корутину !!!!
+//                res.layers[id].redrawTexture()
             }
 
             when (it.type) {
@@ -90,78 +90,17 @@ class Packer {
 
     private fun gzip(content: ByteArray): ByteArray {
         val bos = ByteArrayOutputStream()
-        GZIPOutputStream(bos).buffered(1024).use { it.write(content) }
+        GZIPOutputStream(bos).buffered().use { it.write(content) }
         return bos.toByteArray()
     }
 
-    private fun unGzip(content: ByteArray): ByteArray = GZIPInputStream(content.inputStream()).buffered(1024).use { it.readBytes() }
-
-//    init {
-//
-////        val type = GAdapter(PackData(0,0,0,0))
-////        builder.registerTypeAdapter(PackData::class.java, GAdapter(PackData(0,0,0,0)))
-//
-//
-//        res.layers.forEachIndexed { id, data ->
-//            val ba = ByteArray(data.pixmap.pixels.remaining())
-//            data.pixmap.pixels.get(ba)
-//            add("${PackName.SPRITE_LAYER}$id", ba, 1024, 1024)
-////            this.data.addAll(ba.toTypedArray())
-////            values.add(PackBytes("${PackName.SPRITE_LAYER}$id", position, this.data.size, 1024, 1024))
-////            position = this.data.size
-//        }
-//
-//        add(PackName.SPRITE_PALETTE, PaletteUtils.convertPaletteTo())
-////        data.addAll(PaletteUtils.convertPaletteTo().toTypedArray())
-////        values.add(PackBytes(PackName.SPRITE_PALETTE, position, this.data.size))
-////        position = this.data.size
-//
-//
-////        repeat(10) {
-////            array.add(PackBytes(CompressionType.SPRITE_LAYER, it, 0, 0, 0))
-//////            array.add(PackData(0, 0, 0, 0))
-////        }
-////        val spr = SpriteLayersPack("name___", 3)
-////        spr.compress()
-////        array.add(spr)
-//        val g = gson.toJson(values)
-//        println(g)
-//        println("______________________________")
-//        //-------------------------------------
-//
-//        values.clear()
-//        val arrayTutorialType = object : TypeToken<ArrayList<PackBytes>>() {}.type
-////        var tutorials: ArrayList<Compression> = gson.fromJson(g, array::class.java)
-//
-//        values.addAll(gson.fromJson(g, arrayTutorialType))
-//
-//        val s = values.filterIsInstance<TestPack>()
-//        val b = values.filterIsInstance<SpriteLayersPack>()
-//        println(s.size)
-//        println("++++++++++++")
-//
-//
-//        values.forEach { println(it.type) }
-//
-//        println(values.find { it.type == PackName.SPRITE_PALETTE }?.startPosition)
-//
-////        println(b[0].name)
-////        array.forEach { it.compress() }
-////        tutorials.forEachIndexed { idx, tut -> println("> Item ${idx}:\n${tut}") }
-//
-//
-////        val c: LayerPack = gson.fromJson(map["sprite layer_1"], LayerPack::class.java)
-//
-//
-//    }
+    private fun unGzip(content: ByteArray): ByteArray = GZIPInputStream(content.inputStream()).buffered().use { it.readBytes() }
 
     fun clear() {
         position = 0
         values.clear()
         data.clear()
     }
-
-
 }
 
 @ExperimentalUnsignedTypes

@@ -18,6 +18,8 @@ import java.util.zip.ZipOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.internal.Reflection
+import kotlin.reflect.full.createInstance
 
 suspend fun filesCollect(): Array<ByteArray> {
     val filesCollection: Array<ByteArray>
@@ -41,8 +43,16 @@ suspend fun filesCollect(): Array<ByteArray> {
     }
 }
 
+fun <T> test(name: String): T {
+
+//    val c = Reflection.
+    val r = Reflection.createKotlinClass(Packable::class.java, name).createInstance()
+    return r as T
+}
+
 @ExperimentalUnsignedTypes
 fun main() {
+
 
     val size = 8
     val selection = RectInt(0, 0, 24, 32)

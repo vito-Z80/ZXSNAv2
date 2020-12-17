@@ -14,10 +14,6 @@ open class WindowOutScreen(name: String) : Window(name, module.skin) {
 
     val lastBounds = Rectangle()
 
-//    init {
-//        collectContent()
-//        pack()
-//    }
 
     override fun pack() {
         this.name = this::class.java.name
@@ -26,6 +22,7 @@ open class WindowOutScreen(name: String) : Window(name, module.skin) {
 //        toCenter()
         module.stage.addActor(this)
         lastBounds.set(x, y, width, height)
+        roundPosition()
     }
 
     fun toCenter() {
@@ -37,6 +34,7 @@ open class WindowOutScreen(name: String) : Window(name, module.skin) {
                 0.25f,
                 Interpolation.swingOut
         ))
+        roundPosition()
     }
 
 //    private fun collectContent() {

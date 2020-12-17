@@ -3,9 +3,7 @@ package ru.serdjuk.zxsna.app.system
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteUtils
-import ru.serdjuk.zxsna.app.utils.currentBackgroundColor
-import ru.serdjuk.zxsna.app.utils.isActorExists
+import ru.serdjuk.zxsna.app.palette.PaletteUtils
 import java.io.File
 
 @ExperimentalUnsignedTypes

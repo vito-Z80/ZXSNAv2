@@ -28,7 +28,8 @@ class UI {
         const val CHECK_OFF = "checkOffIcon"
         const val ARROW_16x8 = "arrow16x8"
         const val DOUBLE_ARROW_LEFT = "doubleArrow"
-        const val DOUBLE_ARROW_RIGHT = "doubleArrow"    // FIXME она тоже левая. Либо flip от спрайта либо добавить перевернутый
+        const val DOUBLE_ARROW_RIGHT =
+            "doubleArrow"    // FIXME она тоже левая. Либо flip от спрайта либо добавить перевернутый
         const val SQUAD_ICON = "squadIcon"
         const val ARROW_DOWN = "arrowDown"
 //        const val ARROW_UP = "arrowUp"
@@ -61,8 +62,14 @@ class UI {
 
         const val LABEL_D = "labelD"
 
+        const val LABEL_IN = "labelIn"
+        const val LABEL_OUT = "labelOut"
 
-        const val USER_PALETTE = "userPalette"
+
+        const val SPRITE_PALETTE_4BPP = "spritePalette4bpp"
+        const val SPRITE_PALETTE_9BPP = "spritePalette9bpp"
+        const val TILE_PALETTE_4BPP = "tilePalette4bpp"
+        const val TILE_PALETTE_9BPP = "tilePalette9bpp"
         const val MAIN_PALETTE = "mainPalette"
         const val OVERLAY_PANEL = "transparentOverlay"
         const val LEVITATION_CELL = "levitationCell"
@@ -78,8 +85,15 @@ class UI {
         const val BUTTON_OFF = "buttonOff9p"
 
         const val PROGRESS_BAR = "manicminer"
+
+        const val BUTTON_PLUS = "plus"
+        const val BUTTON_MINUS = "minus"
+        const val CHECK_BUTTON = "checkButton"
+
     }
 
+    var styleLabelIn:Label.LabelStyle? = null
+    var styleLabelOut:Label.LabelStyle? = null
     private val atlas = res.atlas
     private val stage = module.stage
     private val skin = module.skin
@@ -111,9 +125,19 @@ class UI {
         fileChooser()
 
         // ui added here
-
+        styleLabelIn = Label.LabelStyle().also {
+            it.background = skin.getDrawable(BLACK)
+            it.font = skin.getFont(DEFAULT)
+            it.fontColor = skin.getColor(WHITE)
+        }
+        styleLabelOut = Label.LabelStyle().also {
+            it.background = skin.getDrawable(LIGHT_GRAY)
+            it.font = skin.getFont(DEFAULT)
+            it.fontColor = skin.getColor(BLACK)
+        }
 
     }
+
 
     fun update(delta: Float) {
         stage.act(delta)
@@ -167,13 +191,26 @@ class UI {
         skin.add(TOOL_FILL, atlas.findRegion(TOOL_FILL), TextureRegion::class.java)
         skin.add(TOOL_SELECT, atlas.findRegion(TOOL_SELECT), TextureRegion::class.java)
 
+        // plus minus button
+        skin.add(BUTTON_PLUS, atlas.findRegion(BUTTON_PLUS), TextureRegion::class.java)
+        skin.add(BUTTON_MINUS, atlas.findRegion(BUTTON_MINUS), TextureRegion::class.java)
+
+
         val buttonOn = atlas.findRegion(BUTTON_ON)
         val buttonOnSplits = buttonOn.splits
-        skin.add(BUTTON_ON, NinePatch(buttonOn, buttonOnSplits[0], buttonOnSplits[1], buttonOnSplits[2], buttonOnSplits[3]), NinePatch::class.java)
+        skin.add(
+            BUTTON_ON,
+            NinePatch(buttonOn, buttonOnSplits[0], buttonOnSplits[1], buttonOnSplits[2], buttonOnSplits[3]),
+            NinePatch::class.java
+        )
 
         val buttonOff = atlas.findRegion(BUTTON_OFF)
         val buttonOffSplits = buttonOff.splits
-        skin.add(BUTTON_OFF, NinePatch(buttonOff, buttonOffSplits[0], buttonOffSplits[1], buttonOffSplits[2], buttonOffSplits[3]), NinePatch::class.java)
+        skin.add(
+            BUTTON_OFF,
+            NinePatch(buttonOff, buttonOffSplits[0], buttonOffSplits[1], buttonOffSplits[2], buttonOffSplits[3]),
+            NinePatch::class.java
+        )
 
 
         val region = atlas.findRegion(APP_WINDOW)
@@ -211,10 +248,20 @@ class UI {
         menuItem.disabled = skin.getDrawable(LIGHT_GRAY)
         skin.add(DEFAULT, menuItem, MenuItem.MenuItemStyle::class.java)
 
-
-        val checkBox = CheckBox.CheckBoxStyle(skin.getDrawable(CHECK_OFF), skin.getDrawable(CHECK_ON), skin.getFont(DEFAULT), Color.BLACK)
+        val checkBox = CheckBox.CheckBoxStyle(
+            skin.getDrawable(CHECK_OFF),
+            skin.getDrawable(CHECK_ON),
+            skin.getFont(DEFAULT),
+            Color.BLACK
+        )
 //        checkBox.checkboxOnOver = skin.getDrawable(GRADIENT_BG)
         skin.add(DEFAULT, checkBox, CheckBox.CheckBoxStyle::class.java)
+
+
+        val checkBoxPM = CheckBox.CheckBoxStyle(
+            skin.getDrawable(BUTTON_MINUS), skin.getDrawable(BUTTON_PLUS), skin.getFont(DEFAULT), null
+        )
+        skin.add(CHECK_BUTTON, checkBoxPM, CheckBox.CheckBoxStyle::class.java)
 
     }
 
@@ -279,10 +326,10 @@ class UI {
         skin.add(DEFAULT, ib, ImageButton.ImageButtonStyle::class.java)
 
         val textButton = TextButton.TextButtonStyle(
-                skin.getDrawable(BUTTON_ON),
-                skin.getDrawable(BUTTON_OFF),
-                skin.getDrawable(BUTTON_OFF),
-                skin.getFont(DEFAULT)
+            skin.getDrawable(BUTTON_ON),
+            skin.getDrawable(BUTTON_OFF),
+            skin.getDrawable(BUTTON_OFF),
+            skin.getFont(DEFAULT)
         )
         textButton.fontColor = skin.getColor(GRAY)
         textButton.downFontColor = skin.getColor(LIGHT_GRAY)
@@ -297,10 +344,10 @@ class UI {
         skin.add(DEFAULT, textButton, TextButton.TextButtonStyle::class.java)
 
         val visTextButton = VisTextButton.VisTextButtonStyle(
-                skin.getDrawable(GRAY),
-                skin.getDrawable(DARK_GRAY),
-                skin.getDrawable(DARK_GRAY),
-                skin.getFont(DEFAULT)
+            skin.getDrawable(GRAY),
+            skin.getDrawable(DARK_GRAY),
+            skin.getDrawable(DARK_GRAY),
+            skin.getFont(DEFAULT)
         )
         skin.add(DEFAULT, visTextButton, VisTextButton.VisTextButtonStyle::class.java)
 
@@ -356,18 +403,31 @@ class UI {
     private fun text() {
         val tf = TextField.TextFieldStyle()
 
-        tf.background = skin.getDrawable(GRADIENT_GG)
-        tf.focusedBackground = skin.getDrawable(GRADIENT_GG)
-        tf.cursor = skin.getDrawable(GRADIENT_GG)
-        tf.disabledBackground = skin.getDrawable(GRADIENT_GG)
-        tf.selection = skin.getDrawable(GRADIENT_GG)
+        tf.background = skin.getDrawable(LIGHT_GRAY)
+        tf.focusedBackground = skin.getDrawable(WHITE)
+        tf.cursor = skin.getDrawable(SETTINGS_ICON)
+//        tf.disabledBackground = skin.getDrawable(GRADIENT_GG)
+        tf.selection = skin.getDrawable(GRAY)
         tf.font = skin.getFont(DEFAULT)
         tf.messageFont = skin.getFont(DEFAULT)
-        tf.messageFontColor = Color.WHITE
-        tf.disabledFontColor = Color.DARK_GRAY
-        tf.focusedFontColor = Color.LIGHT_GRAY
-        tf.fontColor = Color.WHITE
+        tf.messageFontColor = Color.DARK_GRAY
+//        tf.disabledFontColor = Color.DARK_GRAY
+        tf.focusedFontColor = Color.BLACK
+        tf.fontColor = Color.BLACK
         skin.add(DEFAULT, tf, TextField.TextFieldStyle::class.java)
+
+
+//        val labelIn = Label.LabelStyle()
+//        labelIn.background = skin.getDrawable(GRAY)
+//        labelIn.font = skin.getFont(DEFAULT)
+//        labelIn.fontColor = skin.getColor(BLACK)
+//        skin.add(LABEL_IN, labelIn, Label::class.java)
+//
+//        val labelOut = Label.LabelStyle()
+//        labelOut.background = skin.getDrawable(DARK_GRAY)
+//        labelOut.font = skin.getFont(DEFAULT)
+//        labelOut.fontColor = skin.getColor(WHITE)
+//        skin.add(LABEL_OUT, labelOut, Label::class.java)
 
     }
 

@@ -58,42 +58,42 @@ checkOnIcon
   index: -1
 color959696
   rotate: false
-  xy: 48, 1843
+  xy: 80, 1875
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorBlack
   rotate: false
-  xy: 0, 1795
+  xy: 32, 1829
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorDarkGray
   rotate: false
-  xy: 240, 2031
+  xy: 16, 1811
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorGray
   rotate: false
-  xy: 16, 1811
+  xy: 48, 1843
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorLightGray
   rotate: false
-  xy: 32, 1829
+  xy: 64, 1861
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorWhite
   rotate: false
-  xy: 224, 2015
+  xy: 0, 1795
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -148,11 +148,25 @@ manicminer
   orig: 2048, 16
   offset: 0, 0
   index: -1
+minus
+  rotate: false
+  xy: 240, 2024
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
 penTool
   rotate: false
   xy: 192, 2000
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+plus
+  rotate: false
+  xy: 224, 2008
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1
 selectTool

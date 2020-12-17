@@ -1,16 +1,16 @@
 package ru.serdjuk.zxsna.app.utils
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import ru.serdjuk.zxsna.app.system.compression.Compression
 import ru.serdjuk.zxsna.app.system.module
-import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.sensor
+import java.util.*
+import javax.xml.crypto.Data
+import kotlin.system.measureTimeMillis
 
 private val worldMouseDown = Vector2(-100f, -100f)
 val tmp2Position = Vector2()
@@ -25,13 +25,35 @@ fun buttonOnce(key: Int): Boolean {
     return Gdx.input.isButtonJustPressed(key)
 }
 
+
+private var dcTimer = 0L
+
+@ExperimentalUnsignedTypes
+fun doubleClick(millisInterval: Long = 250L): Boolean {
+    if (buttonOnce(0)) {
+        if (dcTimer == 0L) {
+            dcTimer = System.currentTimeMillis()
+        } else {
+            if ((System.currentTimeMillis() - dcTimer) <= millisInterval) {
+                dcTimer = 0L
+                return true
+            } else {
+                dcTimer = System.currentTimeMillis()
+            }
+        }
+    }
+    return false
+}
+
+
 @ExperimentalUnsignedTypes
 fun buttonUp(button: Int): Boolean {
     if (buttonOnce(button)) {
         worldMouseDown.set(sensor.worldMouse)
     }
     if (!buttonHold(button) && (worldMouseDown.x == sensor.worldMouse.x &&
-                    worldMouseDown.y == sensor.worldMouse.y)) {
+                worldMouseDown.y == sensor.worldMouse.y)
+    ) {
         worldMouseDown.setZero()
         return true
     }
@@ -43,10 +65,10 @@ fun keyOnce(key: Int) = Gdx.input.isKeyJustPressed(key)
 
 private val amountPosition = Vector2()
 fun calculateAmount(position: Vector2, previousPosition: Vector2) =
-        amountPosition.set(previousPosition.x - position.x, previousPosition.y - position.y)
+    amountPosition.set(previousPosition.x - position.x, previousPosition.y - position.y)
 
 fun calculateAmount(positionX: Float, positionY: Float, previousPositionX: Float, previousPositionY: Float) =
-        amountPosition.set(previousPositionX - positionX, previousPositionY - positionY)
+    amountPosition.set(previousPositionX - positionX, previousPositionY - positionY)
 
 
 @ExperimentalUnsignedTypes
@@ -57,8 +79,12 @@ inline fun <reified T> isCompressionClass(compression: Compression): Boolean = c
 
 
 @ExperimentalUnsignedTypes
-fun outActor() = module.stage.root.hit(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), true) == null
-fun isPointInPolygon(polygon: FloatArray, x: Float, y: Float) = Intersector.isPointInPolygon(polygon, 0, polygon.size, x, y)
+fun outActor() =
+    module.stage.root.hit(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), true) == null
+
+fun isPointInPolygon(polygon: FloatArray, x: Float, y: Float) =
+    Intersector.isPointInPolygon(polygon, 0, polygon.size, x, y)
+
 fun Color.toInt(): Int {
     return (255 * r).toInt() shl 24 or ((255 * g).toInt() shl 16) or ((255 * b).toInt() shl 8) or (255 * a).toInt()
 }
@@ -91,26 +117,4 @@ fun Rectangle.addPosition(x: Float, y: Float) {
 }
 
 
-
-
-// resource creator  FIXME оставить и доработать  ? спецефичная вещь хз нужна ли...
-/**
- * add colored rectangle to UI and atlas
- * @param size
- */
-@ExperimentalUnsignedTypes
-fun createResource(size: Int, color: Color, name: String, fill: Boolean = true): TextureRegion {
-    val position = module.atlasUtils.getFreePosition(size, size)
-    return TextureRegion(res.texture, position.x.toInt(), position.y.toInt(), size, size).also {
-        res.pixmap.setColor(color)
-        if (fill) {
-            res.pixmap.fillRectangle(position.x.toInt(), position.y.toInt(), size, size)
-        } else {
-            res.pixmap.drawRectangle(position.x.toInt(), position.y.toInt(), size, size)
-        }
-        module.skin.add(name, it, TextureRegion::class.java)
-        res.atlas.addRegion(name, it)
-        res.texture.draw(res.pixmap, 0, 0)
-    }
-}
 

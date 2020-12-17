@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
+import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.system.module
-import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.sensor
+import ru.serdjuk.zxsna.app.system.system
 import ru.serdjuk.zxsna.app.utils.keyHold
 import ru.serdjuk.zxsna.app.utils.keyOnce
 
@@ -16,12 +17,15 @@ import ru.serdjuk.zxsna.app.utils.keyOnce
 class AppShapes {
 
     //    val camera = Agent.module.render.camera
-    @Transient
     val shape = ShapeRenderer().also { it.setAutoShapeType(true) }
 
     //    private val t = res.data.workLayers[res.data.sensor.plSpinner].region
     @Transient
-    private val t = res.layers[AppPaletteWindow.offset].region
+//    private val t = res.layers[AppPaletteWindow.offset].region
+//    private val t = system.set<AppLayersSystem>(true).getLayer()?.region
+
+    // TODO разъебаться со слоями добавив в систему и убрать из ресурсов
+//    private val t = system.get<AppLayersSystem>()?.getLayer()?.region
 
     val color01 = Color(1f, 1f, 1f, 0.1f)
     val color02 = Color(1f, 1f, 1f, 0.2f)
@@ -34,15 +38,16 @@ class AppShapes {
         shape.begin()
 
         if (keyHold(Input.Keys.CONTROL_LEFT) && keyOnce(Input.Keys.G)) isGrid = !isGrid
-
-        if (isGrid) {
-            squareBounds(8, color02)
-            squareBounds(16, color03)
-            square8x8(color01)
+        val t = system.set<AppLayersSystem>(true).getLayer()?.region
+        if (t != null) {
+            if (isGrid) {
+                squareBounds(8, color02, t)
+                squareBounds(16, color03, t)
+                square8x8(color01, t)
+            }
+            layerBorder(t)
         }
-
-        layerBorder()
-        selector()
+        selector()  // перенести в условие выше ?
 
         shape.end()
         Gdx.gl20.glDisable(GL20.GL_BLEND)
@@ -63,12 +68,12 @@ class AppShapes {
         )
     }
 
-    private fun layerBorder() {
+    private fun layerBorder(t: TextureRegion) {
         shape.color = Color.LIGHT_GRAY
         shape.rect(t.regionX.toFloat(), t.regionY.toFloat(), t.regionWidth.toFloat(), -t.regionHeight.toFloat())
     }
 
-    private fun squareBounds(size: Int, color: Color) {
+    private fun squareBounds(size: Int, color: Color, t: TextureRegion) {
         shape.color = color
         shape.set(ShapeRenderer.ShapeType.Line)
 //        val width = t.regionWidth.toFloat()
@@ -83,7 +88,7 @@ class AppShapes {
         }
     }
 
-    private fun square8x8(color: Color) {
+    private fun square8x8(color: Color, t: TextureRegion) {
         shape.color = color
         val x = (sensor.worldMouse.x.toInt() and (t.regionWidth - 8)).toFloat()
         val y = (sensor.worldMouse.y.toInt() and (t.regionHeight - 8)).toFloat()

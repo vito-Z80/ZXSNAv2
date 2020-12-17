@@ -60,11 +60,11 @@ class PackCollector {
 
     private fun fillArray() {
 
-        res.layers.forEachIndexed { id, data ->
-            val layer = SpriteLayersPack("name_$id", id)
-            layer.compress()
-            array.add(layer)
-        }
+//        res.layers.forEachIndexed { id, data ->
+//            val layer = SpriteLayersPack("name_$id", id)
+//            layer.compress()
+//            array.add(layer)
+//        }
     }
 }
 
@@ -82,8 +82,8 @@ class SpriteSheetsPack(val name: String, val numbers: Int)
 @ExperimentalUnsignedTypes
 class SpriteLayersPack(val name: String, val layerId: Int, var data: ByteArray? = null) : Compression {
     override fun compress() {
-        data = ByteArray(res.layers[layerId].pixmap.pixels.remaining())
-        res.layers[layerId].pixmap.pixels.get(data)
+//        data = ByteArray(res.layers[layerId].pixmap.pixels.remaining())
+//        res.layers[layerId].pixmap.pixels.get(data)
     }
 
     override fun deCompress() {

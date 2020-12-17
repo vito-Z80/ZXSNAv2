@@ -11,7 +11,8 @@ class Sensor {
     val screenBounds = Rectangle()
     val worldBounds = Rectangle()
 
-    val screenMouse = Vector2()
+    val screenMouseYUp = Vector2()
+    val screenMouseYDown = Vector2()
     private val mouseJob = Vector2()
     val preMouse = Vector2()
     val worldMouse = Vector2()

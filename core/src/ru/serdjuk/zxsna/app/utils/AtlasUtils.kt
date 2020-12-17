@@ -121,8 +121,8 @@ class AtlasUtils(val pixmap: Pixmap) {
 
 
     private fun getClearPixel(position: Vector2, clearPixel: Int, soughtWidth: Int): Vector2 {
-        while ((position.x + soughtWidth).toInt() >= pixmap.width || pixmap.getPixel(position.x.toInt(), position.y.toInt()) != clearPixel) {
-            if ((position.x + soughtWidth).toInt() >= pixmap.width) {
+        while ((position.x + soughtWidth).toInt() > pixmap.width || pixmap.getPixel(position.x.toInt(), position.y.toInt()) != clearPixel) {
+            if ((position.x + soughtWidth).toInt() > pixmap.width) {
                 position.x = -1f
                 position.y++
             }

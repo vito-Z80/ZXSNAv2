@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import ru.serdjuk.zxsna.StartZXSNA
+import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.component.cameraControl
 import ru.serdjuk.zxsna.app.utils.WindowOutScreen
 import ru.serdjuk.zxsna.app.system.History
 import ru.serdjuk.zxsna.app.system.module
+import ru.serdjuk.zxsna.app.system.system
 
 @ExperimentalUnsignedTypes
 class AppDebug() : WindowOutScreen("Debug window") {
@@ -16,10 +19,16 @@ class AppDebug() : WindowOutScreen("Debug window") {
     private val fps = Label("", skin)
     private val worldDrawCall = Label("", skin)
     private val uiDrawCall = Label("", skin)
-    private val memory = Label("", skin)
+    private val javaHeap = Label("", skin)
+    private val nativeHeap = Label("", skin)
     private val cameraPosition = Label("", skin)
     private val cameraZoom = Label("", skin)
     private val undoSize = Label("", skin)
+    private val stageActors = Label("", skin)
+    private val packableStorage = Label("", skin)
+    private val packableTypes = Label("", skin)
+    private val systemSize = Label("", skin)
+    private val millis = Label("", skin)
 
     init {
         table.pad(2f)
@@ -34,10 +43,14 @@ class AppDebug() : WindowOutScreen("Debug window") {
         table.add(uiDrawCall).fill()
         table.row()
 
-
-        table.add("used:").fill()
-        table.add(memory).fill()
+        table.add("J.Heap:").fill()
+        table.add(javaHeap).fill()
         table.row()
+
+        table.add("N.Heap:").fill()
+        table.add(nativeHeap).fill()
+        table.row()
+
 
         table.add("Camera position:").fill()
         table.add(cameraPosition).fill()
@@ -45,6 +58,26 @@ class AppDebug() : WindowOutScreen("Debug window") {
 
         table.add("Camera zoom:").fill()
         table.add(cameraZoom).fill()
+        table.row()
+
+        table.add("Stage actors:").fill()
+        table.add(stageActors).fill()
+        table.row()
+
+        table.add("Packable storage:").fill()
+        table.add(packableStorage).fill()
+        table.row()
+
+        table.add("Packable types:").fill()
+        table.add(packableTypes).fill()
+        table.row()
+
+        table.add("SYSTEM:").fill()
+        table.add(systemSize).fill()
+        table.row()
+
+        table.add("cpu+gpu:").fill()
+        table.add(millis).fill()
         table.row()
 
         table.add("UNDO size:").fill()
@@ -65,12 +98,18 @@ class AppDebug() : WindowOutScreen("Debug window") {
             fps.setText("${Gdx.graphics.framesPerSecond}")
             worldDrawCall.setText(module.worldBatch.renderCalls)
             uiDrawCall.setText(module.uiBatch.renderCalls)
-            val usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
-            memory.setText("${usedBytes / 1048576} Mb / $usedBytes b")
+            val jHeap = Gdx.app.javaHeap
+            val nHeap = Gdx.app.nativeHeap
+            javaHeap.setText("${jHeap / 1048576}Mb | $jHeap")
+            nativeHeap.setText("${nHeap / 1048576}Mb | $nHeap")
             cameraPosition.setText(cameraControl.camera.position.toString())
             cameraZoom.setText(cameraControl.camera.zoom.toString())
             undoSize.setText(History.hp.size)
-
+            packableStorage.setText(Packable.storage.size)
+            packableTypes.setText(Packable.types.size)
+            stageActors.setText(module.stage.root.children.size)
+            systemSize.setText(system.systems.size)
+            millis.setText("${StartZXSNA.appTime}ms")
             timer = 0f
         }
         super.act(delta)

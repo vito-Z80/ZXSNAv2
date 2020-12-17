@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import ru.serdjuk.zxsna.app.component.ui.UI
-import ru.serdjuk.zxsna.app.component.ui.windows.LayerMenuInfoWindow
+import ru.serdjuk.zxsna.app.windows.LayerMenuInfoWindow
 
 @ExperimentalUnsignedTypes
 class ProgressBarDisplay(val layerMenuInfoWindow: LayerMenuInfoWindow) : Image() {

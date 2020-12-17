@@ -3,11 +3,11 @@ package ru.serdjuk.zxsna.app.utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.serdjuk.zxsna.app.component.ui.palette.PaletteData
-import ru.serdjuk.zxsna.app.component.ui.palette.AppPaletteWindow
-import ru.serdjuk.zxsna.app.component.ui.windows.LayerMenuInfoWindow
-import ru.serdjuk.zxsna.app.system.res
+import ru.serdjuk.zxsna.app.palette.PaletteData
+import ru.serdjuk.zxsna.app.windows.LayerMenuInfoWindow
+import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.system.sensor
+import ru.serdjuk.zxsna.app.system.system
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -17,6 +17,8 @@ open class TextureLayerUtils {
     // если не null значит было заполнено спрайтами или тайлами по пользовательскому инструменту "Веделение"
     // если не null - можно сохранить на диск или в листы спрайтов/тайлов
     var collectResource: ByteArray? = null
+
+
 
     @ExperimentalUnsignedTypes
             /**
@@ -84,7 +86,8 @@ open class TextureLayerUtils {
 //        }
         // data залить прозрачным цветом ранее выбранным пользователем
         val data = IntArray(size / 2) { 0 }
-        val pixmap = res.layers[AppPaletteWindow.offset].pixmap
+//        val pixmap = res.layers[AppPaletteWindow.offset].pixmap
+        val pixmap = system.set<AppLayersSystem>().getLayer()!!.pixmap
         repeat(selection.height) heightY@{ y ->
             repeat(selection.width) widthX@{ x ->
                 val colorInt = pixmap.getPixel(selection.x + x, selection.y + y)
