@@ -3,6 +3,7 @@ package ru.serdjuk.zxsna.app.utils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Intersector
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import ru.serdjuk.zxsna.app.system.compression.Compression
@@ -10,6 +11,7 @@ import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.sensor
 import java.util.*
 import javax.xml.crypto.Data
+import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
 private val worldMouseDown = Vector2(-100f, -100f)
@@ -51,9 +53,7 @@ fun buttonUp(button: Int): Boolean {
     if (buttonOnce(button)) {
         worldMouseDown.set(sensor.worldMouse)
     }
-    if (!buttonHold(button) && (worldMouseDown.x == sensor.worldMouse.x &&
-                worldMouseDown.y == sensor.worldMouse.y)
-    ) {
+    if (!buttonHold(button) && (worldMouseDown.x == sensor.worldMouse.x && worldMouseDown.y == sensor.worldMouse.y)) {
         worldMouseDown.setZero()
         return true
     }
@@ -79,11 +79,9 @@ inline fun <reified T> isCompressionClass(compression: Compression): Boolean = c
 
 
 @ExperimentalUnsignedTypes
-fun outActor() =
-    module.stage.root.hit(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), true) == null
+fun outActor() = module.stage.root.hit(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), true) == null
 
-fun isPointInPolygon(polygon: FloatArray, x: Float, y: Float) =
-    Intersector.isPointInPolygon(polygon, 0, polygon.size, x, y)
+fun isPointInPolygon(polygon: FloatArray, x: Float, y: Float) = Intersector.isPointInPolygon(polygon, 0, polygon.size, x, y)
 
 fun Color.toInt(): Int {
     return (255 * r).toInt() shl 24 or ((255 * g).toInt() shl 16) or ((255 * b).toInt() shl 8) or (255 * a).toInt()
@@ -96,13 +94,15 @@ fun getBytes(other: Int) = ByteArray(4) { (other ushr (it * 8) and 255).toByte()
 
 // получить ИНТ из 4-х байт
 @ExperimentalUnsignedTypes
-fun getInt(bytes: ByteArray) = (bytes[0].toUByte().toInt() shl 24) or (bytes[1].toUByte().toInt() shl 16) or
-        (bytes[2].toUByte().toInt() shl 8) or (bytes[3].toUByte().toInt())
+fun getInt(bytes: ByteArray) =
+    (bytes[0].toUByte().toInt() shl 24) or (bytes[1].toUByte().toInt() shl 16) or (bytes[2].toUByte().toInt() shl 8) or (bytes[3].toUByte().toInt())
 
 @ExperimentalUnsignedTypes
 fun toIntArray(byteArray: ByteArray) = IntArray(byteArray.size / Int.SIZE_BYTES) {
     getInt(byteArray.copyOfRange(it * Int.SIZE_BYTES, it * Int.SIZE_BYTES + Int.SIZE_BYTES))
 }
+
+
 
 
 // обновить соординаты ректангла путем прибавления

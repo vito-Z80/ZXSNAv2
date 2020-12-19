@@ -1,6 +1,8 @@
 package ru.serdjuk.zxsna.app.tools.actors
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.MenuItem
@@ -34,6 +36,8 @@ class SelectorMenuWindow : PopupMenu() {
     private val uploadItemSpriteSheet = MenuItem("sprite sheet")
     private val uploadItemTileSheet = MenuItem("tile sheet")
     
+    private val test = MenuItem("test")
+    
     
     //--------------------
     private val recolorPixels = MenuItem("Recolor pixels")
@@ -47,7 +51,7 @@ class SelectorMenuWindow : PopupMenu() {
     fun showLayerMenu() {
         sensor.transformSelectionRectangle()
         displayLayerMenuMethod()
-        pack()
+//        pack()
         showMenu(module.stage, sensor.screenMouseYUp.x, sensor.screenMouseYUp.y)
     }
     
@@ -83,6 +87,9 @@ class SelectorMenuWindow : PopupMenu() {
         addItem(saveMenu)
         addItem(uploadMenu)
         
+        testPopup()
+        
+        
         saveMenu.subMenu = PopupMenu()
         saveMenu.subMenu.addItem(saveTilesItem)
         saveMenu.subMenu.addItem(saveSpritesItem)
@@ -90,6 +97,7 @@ class SelectorMenuWindow : PopupMenu() {
         uploadMenu.subMenu = PopupMenu()
         uploadMenu.subMenu.addItem(uploadItemTileSheet)
         uploadMenu.subMenu.addItem(uploadItemSpriteSheet)
+        uploadMenu.subMenu.addItem(test)
         
         // Listeners
         saveSpritesItem.addListener(createListener(spriteSize))
@@ -133,6 +141,21 @@ class SelectorMenuWindow : PopupMenu() {
             module.stage.addActor(infoMenu)
 //            layers[sensor.paletteOffset].collect4bpp(resourceSize, infoMenu)
         }
+    }
+    
+    
+    private fun testPopup() {
+        test.subMenu = PopupMenu()
+        val scroll = ScrollPane(test.subMenu)
+        scroll.setFlickScroll(true)
+        scroll.setScrollingDisabled(true,false)
+        repeat(17) {
+            val l = Label("test_$it", module.skin)
+            test.subMenu.add(l).row()
+            
+        }
+        
+        
     }
     
     

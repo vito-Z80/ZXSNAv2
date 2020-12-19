@@ -18,7 +18,8 @@ class AppToolTip : Group() {
     
     private val image = Image(module.skin.getPatch(UI.BUTTON_ON))
     private val imageEdges = module.skin.getPatch(UI.BUTTON_ON)
-    private val label = Label("", module.skin)
+    private val label = Label("", module.skin, UI.LABEL_BN_LIGHT_BLACK)
+    private var hash = 0
     
     
     init {
@@ -41,13 +42,15 @@ class AppToolTip : Group() {
             val y = (Gdx.graphics.height - Gdx.input.y).toFloat()
             val target = module.stage.hit(x, y, true)
             
-            if (target is HelpMessage) {
+            if (target != null && target is HelpMessage) {
+                if (target.hashCode() != hash) {
+                    hash = target.hashCode()
+                    show = true
+                }
                 if (show) {
                     // TODO просчет позиции на экране, если актер выходит за экран.
-                        // FIXME после перетаскивания актера хуня какая-то прет (отображается однои и то-же ссобщение)
                     show = false
-                    label.text.clear()
-                    label.text.append(target.message)
+                    label.setText(target.message)
                     label.setPosition(x, y)
                     label.isVisible = true
                     label.actions.clear()
@@ -67,7 +70,7 @@ class AppToolTip : Group() {
                 image.addAction(Actions.fadeOut(0.25f))
                 show = true
             }
-            delay(1000)
+            delay(125)
         }
     }
     

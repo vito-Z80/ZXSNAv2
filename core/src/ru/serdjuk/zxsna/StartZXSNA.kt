@@ -13,6 +13,7 @@ import ru.serdjuk.zxsna.app.system.*
 import ru.serdjuk.zxsna.app.system.tiles.appSheets
 import ru.serdjuk.zxsna.app.utils.*
 import ru.serdjuk.zxsna.app.windows.AppToolTip
+import ru.serdjuk.zxsna.app.windows.PopupGroup
 import kotlin.system.measureTimeMillis
 
 @ExperimentalUnsignedTypes
@@ -28,6 +29,7 @@ class StartZXSNA : ScreenAdapter() {
     }
     
     override fun show() {
+    
         
         ui.install()
 //        PaletteUtils
@@ -47,6 +49,9 @@ class StartZXSNA : ScreenAdapter() {
         UserSheets()
         
         module.stage.addActor(AppToolTip())
+        
+        
+        module.stage.addActor(PopupGroup())
         
         super.show()
         
