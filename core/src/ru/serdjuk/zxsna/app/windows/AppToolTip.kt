@@ -37,6 +37,7 @@ class AppToolTip : Group() {
     
     private suspend fun process() {
         var show = true
+        Gdx.app.log(this::class.java.name, "ToolTip Process start")
         while (true) {
             val x = Gdx.input.x.toFloat()
             val y = (Gdx.graphics.height - Gdx.input.y).toFloat()

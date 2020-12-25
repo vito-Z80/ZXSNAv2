@@ -10,15 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.PopupMenu
+import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.component.ui.UI
 import ru.serdjuk.zxsna.app.component.ui.debug.AppDebug
 import ru.serdjuk.zxsna.app.palette.AppPaletteWindow
-import ru.serdjuk.zxsna.app.tools.actors.AppToolsWindow
 import ru.serdjuk.zxsna.app.system.ImageSystem
 import ru.serdjuk.zxsna.app.system.file
 import ru.serdjuk.zxsna.app.system.module
-import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.system.system
+import ru.serdjuk.zxsna.app.tools.actors.AppToolsWindow
 
 @ExperimentalUnsignedTypes
 class MainMenu : Image() {

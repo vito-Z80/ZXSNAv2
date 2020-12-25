@@ -6,35 +6,35 @@ filter: Nearest,Nearest
 repeat: none
 BenchNineLight
   rotate: false
-  xy: 128, 1964
-  size: 128, 68
+  xy: 128, 1904
+  size: 128, 128
   orig: 128, 128
-  offset: 0, 59
+  offset: 0, 0
   index: -1
 JetBrainsLight
   rotate: false
-  xy: 0, 1915
-  size: 128, 117
+  xy: 0, 1776
+  size: 128, 128
   orig: 128, 128
-  offset: 0, 10
+  offset: 0, 0
   index: -1
 arrow16x8
   rotate: false
-  xy: 288, 1993
-  size: 16, 7
+  xy: 320, 2024
+  size: 16, 8
   orig: 16, 8
   offset: 0, 0
   index: -1
 arrowDown
   rotate: false
-  xy: 192, 1922
-  size: 16, 10
+  xy: 160, 1824
+  size: 16, 16
   orig: 16, 16
-  offset: 0, 3
+  offset: 0, 0
   index: -1
 border
   rotate: false
-  xy: 256, 1968
+  xy: 0, 1648
   size: 32, 32
   split: 2, 2, 2, 2
   orig: 32, 32
@@ -42,7 +42,7 @@ border
   index: -1
 buttonOff9p
   rotate: false
-  xy: 256, 2000
+  xy: 128, 1808
   size: 32, 32
   split: 8, 8, 8, 8
   orig: 32, 32
@@ -50,7 +50,7 @@ buttonOff9p
   index: -1
 buttonOn9p
   rotate: false
-  xy: 0, 1727
+  xy: 256, 1968
   size: 32, 32
   split: 8, 8, 8, 8
   orig: 32, 32
@@ -58,63 +58,63 @@ buttonOn9p
   index: -1
 checkOffIcon
   rotate: false
-  xy: 224, 1954
-  size: 16, 10
+  xy: 64, 1728
+  size: 16, 16
   orig: 16, 16
-  offset: 0, 1
+  offset: 0, 0
   index: -1
 checkOnIcon
   rotate: false
-  xy: 128, 1854
-  size: 16, 14
+  xy: 128, 1792
+  size: 16, 16
   orig: 16, 16
-  offset: 0, 1
+  offset: 0, 0
   index: -1
 color959696
   rotate: false
-  xy: 112, 1822
+  xy: 96, 1759
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorBlack
   rotate: false
-  xy: 32, 1726
+  xy: 64, 1727
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorDarkGray
   rotate: false
-  xy: 256, 1967
+  xy: 80, 1743
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorGray
   rotate: false
-  xy: 80, 1790
+  xy: 128, 1791
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorLightGray
   rotate: false
-  xy: 96, 1806
+  xy: 112, 1775
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorWhite
   rotate: false
-  xy: 64, 1774
+  xy: 144, 1807
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 defaultPane9
   rotate: false
-  xy: 0, 1759
+  xy: 0, 1712
   size: 64, 64
   split: 7, 7, 23, 7
   orig: 64, 64
@@ -122,35 +122,35 @@ defaultPane9
   index: -1
 doubleArrow
   rotate: false
-  xy: 96, 1807
+  xy: 256, 1952
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 fillTool
   rotate: false
-  xy: 32, 1727
+  xy: 256, 2000
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 font_16_java
   rotate: false
-  xy: 0, 1823
-  size: 128, 92
+  xy: 0, 1904
+  size: 128, 128
   orig: 128, 128
-  offset: 0, 35
+  offset: 0, 0
   index: -1
 gradientBG
   rotate: false
-  xy: 0, 1695
+  xy: 192, 1872
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 gradientGG
   rotate: false
-  xy: 192, 1932
+  xy: 64, 1744
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -164,56 +164,71 @@ manicminer
   index: -1
 minus
   rotate: false
-  xy: 0, 1687
+  xy: 0, 1640
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 penTool
   rotate: false
-  xy: 64, 1791
+  xy: 288, 2000
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 plus
   rotate: false
-  xy: 320, 2024
+  xy: 32, 1672
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
+popupWindow
+  rotate: false
+  xy: 288, 1984
+  size: 16, 16
+  split: 4, 4, 4, 4
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 selectTool
   rotate: false
-  xy: 288, 2000
+  xy: 32, 1680
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 128, 1868
+  xy: 0, 1680
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+separator8x8
+  rotate: false
+  xy: 192, 1856
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 settingsIcon
   rotate: false
-  xy: 160, 1886
-  size: 16, 14
+  xy: 224, 1888
+  size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 squadIcon
   rotate: false
-  xy: 64, 1775
+  xy: 96, 1760
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 titlePane9
   rotate: false
-  xy: 128, 1900
+  xy: 128, 1840
   size: 64, 64
   split: 3, 3, 6, 4
   orig: 64, 64

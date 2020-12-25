@@ -1,19 +1,19 @@
 package ru.serdjuk.zxsna
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL30
 import ru.serdjuk.zxsna.app.component.cameraControl
 import ru.serdjuk.zxsna.app.palette.*
 import ru.serdjuk.zxsna.app.component.ui.ui
-import ru.serdjuk.zxsna.app.windows.UserSheets
-import ru.serdjuk.zxsna.app.windows.MainMenu
 import ru.serdjuk.zxsna.app.component.world.shapes
+import ru.serdjuk.zxsna.app.keys.KEYS
+import ru.serdjuk.zxsna.app.keys.keys
 import ru.serdjuk.zxsna.app.system.*
-import ru.serdjuk.zxsna.app.system.tiles.appSheets
 import ru.serdjuk.zxsna.app.utils.*
-import ru.serdjuk.zxsna.app.windows.AppToolTip
-import ru.serdjuk.zxsna.app.windows.PopupGroup
+import ru.serdjuk.zxsna.app.windows.*
+import ru.serdjuk.zxsna.app.windows.popup.AppSelectionMenu
 import kotlin.system.measureTimeMillis
 
 @ExperimentalUnsignedTypes
@@ -48,10 +48,8 @@ class StartZXSNA : ScreenAdapter() {
         
         UserSheets()
         
-        module.stage.addActor(AppToolTip())
+//        module.stage.addActor(AppToolTip())
         
-        
-        module.stage.addActor(PopupGroup())
         
         super.show()
         
@@ -59,6 +57,8 @@ class StartZXSNA : ScreenAdapter() {
     
     
     override fun render(delta: Float) {
+    
+        
         
         val d = 1f / 60f
         appTime = measureTimeMillis {
@@ -96,7 +96,7 @@ class StartZXSNA : ScreenAdapter() {
     override fun resize(width: Int, height: Int) {
         module.worldViewport.update(width, height, true)
         module.uiViewport.update(width, height, true)
-        appSheets.viewport.update(width, height, true)
+//        appSheets.viewport.update(width, height, true)
         sensor.resizeBounds()
         super.resize(width, height)
     }

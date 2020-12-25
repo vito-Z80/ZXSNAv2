@@ -95,6 +95,10 @@ class UI {
         const val BUTTON_MINUS = "minus"
         const val CHECK_BUTTON = "checkButton"
         
+        
+        const val SEPARATOR8X8 = "separator8x8"
+        const val POPUP_WINDOW = "popupWindow"
+        
     }
     
     var styleLabelIn: Label.LabelStyle? = null
@@ -204,6 +208,18 @@ class UI {
         // plus minus button
         skin.add(BUTTON_PLUS, atlas.findRegion(BUTTON_PLUS), TextureRegion::class.java)
         skin.add(BUTTON_MINUS, atlas.findRegion(BUTTON_MINUS), TextureRegion::class.java)
+        skin.add(SEPARATOR8X8, atlas.findRegion(SEPARATOR8X8), TextureRegion::class.java)
+        
+        
+        val popupWindowRegion = atlas.findRegion(POPUP_WINDOW)
+        val popupSplits = popupWindowRegion.splits
+        skin.add(POPUP_WINDOW, NinePatch(
+            popupWindowRegion,
+            popupSplits[0],
+            popupSplits[1],
+            popupSplits[2],
+            popupSplits[3]
+        ), NinePatch::class.java)
         
         
         val buttonOn = atlas.findRegion(BUTTON_ON)
@@ -243,8 +259,8 @@ class UI {
         
         val labelBNLightBlack = Label.LabelStyle(skin.getFont(BN_FONT_LIGHT), Color.BLACK)
         skin.add(LABEL_BN_LIGHT_BLACK, labelBNLightBlack, Label.LabelStyle::class.java)
-    
-        val labelBNLightWhite = Label.LabelStyle(skin.getFont(BN_FONT_LIGHT), Color.BLACK)
+        
+        val labelBNLightWhite = Label.LabelStyle(skin.getFont(BN_FONT_LIGHT), Color.WHITE)
         skin.add(LABEL_BN_LIGHT_WHITE, labelBNLightWhite, Label.LabelStyle::class.java)
         
         // popupMenu
