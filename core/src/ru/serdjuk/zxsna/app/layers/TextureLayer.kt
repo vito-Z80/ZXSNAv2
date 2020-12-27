@@ -21,7 +21,7 @@ class TextureLayer(var width: Int, var height: Int) : TextureLayerUtils() {
     var name = "Layer:  "
     
     // выдкеление на слое с помощью инструмента выдления
-    val selection = RectInt()
+    val selectionArea = Rectangle()
     
     // позиция камеры до смены слоя
     var lastCameraPosition: Vector3? = null
@@ -66,16 +66,16 @@ class TextureLayer(var width: Int, var height: Int) : TextureLayerUtils() {
     
     }
     
-    fun clearSelection() {
-        selection.set(0, 0, 0, 0)
+    fun clearSelectionArea() {
+        selectionArea.set(0f, 0f, 0f, 0f)
     }
     
-    fun getSelectRegion(): TextureRegion {
-        return TextureRegion(texture, selection.x, selection.y, selection.width, selection.height)
+    fun getSelectionRegion(): TextureRegion {
+        return TextureRegion(texture, selectionArea.x, selectionArea.y, selectionArea.width, selectionArea.height)
     }
     
     fun getSlices(type: Int) {
-        val region = getSelectRegion()
+        val region = getSelectionRegion()
         
     }
     

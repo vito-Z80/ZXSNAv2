@@ -71,18 +71,18 @@ class AppFile {
     }
 
     fun loadImagesSequence() {
-        val imageSystem = system.set<ImageSystem>(true) ?: return
-        lazy {
-            val list = openSelectedFiles()
-            if (list != null) {
-                imageSystem.sequence = list
-                imageSystem.sequenceSize = imageSystem.sequence!!.size
-            } else {
-                imageSystem.sequence = null
-                imageSystem.sequenceSize = 0
-                imageSystem.sequenceCounter = 0
-            }
-        }.value
+//        val imageSystem = system.import<ImageSystem>() ?: return
+//        lazy {
+//            val list = openSelectedFiles()
+//            if (list != null) {
+//                imageSystem.sequence = list
+//                imageSystem.sequenceSize = imageSystem.sequence!!.size
+//            } else {
+//                imageSystem.sequence = null
+//                imageSystem.sequenceSize = 0
+//                imageSystem.sequenceCounter = 0
+//            }
+//        }.value
     }
 
 

@@ -1,5 +1,6 @@
 package ru.serdjuk.zxsna.app.tools.actors
 
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -17,7 +18,7 @@ import kotlin.reflect.KFunction1
 
 @ExperimentalUnsignedTypes
 class SelectorMenuWindow : PopupMenu() {
-    private val selection = sensor.selectRectangle
+    private val selection = Rectangle() // sensor.selectRectangle
     private val separator = MenuItem("_______________").also {
         it.isDisabled = true
         it.label.setAlignment(Align.center)
@@ -49,7 +50,7 @@ class SelectorMenuWindow : PopupMenu() {
     }
     
     fun showLayerMenu() {
-        sensor.transformSelectionRectangle()
+//        sensor.transformSelectionRectangle()
         displayLayerMenuMethod()
 //        pack()
         showMenu(module.stage, sensor.screenMouseYUp.x, sensor.screenMouseYUp.y)

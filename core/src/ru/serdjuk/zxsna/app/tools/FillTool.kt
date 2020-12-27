@@ -55,7 +55,7 @@ class FillTool : ITools() {
     }
 
     private fun fill(startX: Int, startY: Int, userColor: Color): Int? {
-        val layer = system.set<AppLayersSystem>(true).getLayer()
+        val layer = system.get<AppLayersSystem>()?.getLayer()
         if (layer != null) {
 
             val bitmap = layer.pixmap

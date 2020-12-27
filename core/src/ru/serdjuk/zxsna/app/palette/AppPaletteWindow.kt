@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.PopupMenu
 import ru.serdjuk.zxsna.app.component.ui.UI
-import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.resources.hexColor512
 import ru.serdjuk.zxsna.app.system.*
 import ru.serdjuk.zxsna.app.utils.*
@@ -64,7 +63,13 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
         pixmap.fillRectangle(region.regionX, region.regionY, region.regionWidth, region.regionHeight)
         PaletteUnit(hexColor512[it].int, region)
     }
-    private val mainPaletteRegion = TextureRegion(texture, mainPalettePosition.x.toInt(), mainPalettePosition.y.toInt(), tableWidth(), tableHeight512()).also {
+    private val mainPaletteRegion = TextureRegion(
+        texture,
+        mainPalettePosition.x.toInt(),
+        mainPalettePosition.y.toInt(),
+        tableWidth(),
+        tableHeight512()
+    ).also {
         module.skin.add(UI.MAIN_PALETTE, it, TextureRegion::class.java)
         res.atlas.addRegion(UI.MAIN_PALETTE, it)
     }
@@ -97,20 +102,32 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
 
     // перемещаемая пользователем ячейка цвета
     private val movableCellPosition = atlasUtils.getFreePosition(cellSize, cellSize)
-    val movableCellRegion = TextureRegion(texture, movableCellPosition.x.toInt(), movableCellPosition.y.toInt(), cellSize, cellSize).also {
-        pixmap.setColor(Color.BLACK)
-        pixmap.drawRectangle(movableCellPosition.x.toInt(), movableCellPosition.y.toInt(), cellSize, cellSize)
-        module.skin.add(UI.LEVITATION_CELL, it, TextureRegion::class.java)
-        res.atlas.addRegion(UI.LEVITATION_CELL, it)
-        texture.draw(pixmap, 0, 0)
-    }
+    val movableCellRegion =
+        TextureRegion(texture, movableCellPosition.x.toInt(), movableCellPosition.y.toInt(), cellSize, cellSize).also {
+            pixmap.setColor(Color.BLACK)
+            pixmap.drawRectangle(movableCellPosition.x.toInt(), movableCellPosition.y.toInt(), cellSize, cellSize)
+            module.skin.add(UI.LEVITATION_CELL, it, TextureRegion::class.java)
+            res.atlas.addRegion(UI.LEVITATION_CELL, it)
+            texture.draw(pixmap, 0, 0)
+        }
     val userMovableImage = Image(movableCellRegion)
 
     // ячейки подсвечивающая местоположение курсора палитр
     private val highlightCellPosition = atlasUtils.getFreePosition(cellSize + 2, cellSize + 2)
-    private val highlightCellRegion = TextureRegion(texture, highlightCellPosition.x.toInt(), highlightCellPosition.y.toInt(), cellSize + 2, cellSize + 2).also {
+    private val highlightCellRegion = TextureRegion(
+        texture,
+        highlightCellPosition.x.toInt(),
+        highlightCellPosition.y.toInt(),
+        cellSize + 2,
+        cellSize + 2
+    ).also {
         pixmap.setColor(Color.WHITE)
-        pixmap.drawRectangle(highlightCellPosition.x.toInt(), highlightCellPosition.y.toInt(), cellSize + 2, cellSize + 2)
+        pixmap.drawRectangle(
+            highlightCellPosition.x.toInt(),
+            highlightCellPosition.y.toInt(),
+            cellSize + 2,
+            cellSize + 2
+        )
         module.skin.add(UI.HIGHLIGHT_CELL, it, TextureRegion::class.java)
         res.atlas.addRegion(UI.HIGHLIGHT_CELL, it)
         texture.draw(pixmap, 0, 0)
@@ -123,9 +140,20 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
 
     // подсветка выбранного пользователем цвета
     private val whiteCellPosition = atlasUtils.getFreePosition(PaletteUnit.size, PaletteUnit.size)
-    private val whiteCellRegion = TextureRegion(texture, whiteCellPosition.x.toInt(), whiteCellPosition.y.toInt(), PaletteUnit.size, PaletteUnit.size).also {
+    private val whiteCellRegion = TextureRegion(
+        texture,
+        whiteCellPosition.x.toInt(),
+        whiteCellPosition.y.toInt(),
+        PaletteUnit.size,
+        PaletteUnit.size
+    ).also {
         pixmap.setColor(Color.WHITE)
-        pixmap.fillRectangle(whiteCellPosition.x.toInt(), whiteCellPosition.y.toInt(), PaletteUnit.size, PaletteUnit.size)
+        pixmap.fillRectangle(
+            whiteCellPosition.x.toInt(),
+            whiteCellPosition.y.toInt(),
+            PaletteUnit.size,
+            PaletteUnit.size
+        )
         module.skin.add(UI.WHITE_CELL, it, TextureRegion::class.java)
         res.atlas.addRegion(UI.WHITE_CELL, it)
         texture.draw(pixmap, 0, 0)
@@ -134,9 +162,20 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
 
     // отображение выбранного пользователем цвета
     private val userColorPosition = atlasUtils.getFreePosition(PaletteUnit.size, PaletteUnit.size)
-    private val userColorRegion = TextureRegion(texture, userColorPosition.x.toInt(), userColorPosition.y.toInt(), PaletteUnit.size, PaletteUnit.size).also {
+    private val userColorRegion = TextureRegion(
+        texture,
+        userColorPosition.x.toInt(),
+        userColorPosition.y.toInt(),
+        PaletteUnit.size,
+        PaletteUnit.size
+    ).also {
         pixmap.setColor(Color.WHITE)
-        pixmap.fillRectangle(userColorPosition.x.toInt(), userColorPosition.y.toInt(), PaletteUnit.size, PaletteUnit.size)
+        pixmap.fillRectangle(
+            userColorPosition.x.toInt(),
+            userColorPosition.y.toInt(),
+            PaletteUnit.size,
+            PaletteUnit.size
+        )
         module.skin.add(UI.USER_COLOR, it, TextureRegion::class.java)
         res.atlas.addRegion(UI.USER_COLOR, it)
         texture.draw(pixmap, 0, 0)
@@ -151,15 +190,16 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
     private val tableX = overlayPosition.x.toInt()
     private val tableY = overlayPosition.y.toInt()
     private val height15Cells = cellSize * 15 + space * 15
-    private val overlayPanelRegion = TextureRegion(texture, tableX, tableY + height15Cells, tableWidth, tableHeight256()).also {
-        module.skin.add(UI.OVERLAY_PANEL, it, TextureRegion::class.java)
-        res.atlas.addRegion(UI.OVERLAY_PANEL, it)
-        pixmap.setColor(0f, 0f, 0f, 0.4f)
-        pixmap.fillRectangle(tableX, tableY, tableWidth, height15Cells)
-        pixmap.fillRectangle(tableX, tableY + height15Cells + cellSize + space * 2, tableWidth, height15Cells)
-        pixmap.setColor(1f, 1f, 1f, 0.0f)
-        pixmap.fillRectangle(tableX, tableY + height15Cells, tableWidth, 18)
-    }
+    private val overlayPanelRegion =
+        TextureRegion(texture, tableX, tableY + height15Cells, tableWidth, tableHeight256()).also {
+            module.skin.add(UI.OVERLAY_PANEL, it, TextureRegion::class.java)
+            res.atlas.addRegion(UI.OVERLAY_PANEL, it)
+            pixmap.setColor(0f, 0f, 0f, 0.4f)
+            pixmap.fillRectangle(tableX, tableY, tableWidth, height15Cells)
+            pixmap.fillRectangle(tableX, tableY + height15Cells + cellSize + space * 2, tableWidth, height15Cells)
+            pixmap.setColor(1f, 1f, 1f, 0.0f)
+            pixmap.fillRectangle(tableX, tableY + height15Cells, tableWidth, 18)
+        }
     private val overlayPanelRegionY = overlayPanelRegion.regionY
     private val overlayPanelRegionHeight = overlayPanelRegion.regionHeight
     private val overlayPanelImage = Image(overlayPanelRegion)
@@ -196,16 +236,16 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
         pack()
 
         userPaletteBounds.set(
-                userPaletteImage.x,
-                userPaletteImage.y,
-                userPaletteImage.width,
-                userPaletteImage.height
+            userPaletteImage.x,
+            userPaletteImage.y,
+            userPaletteImage.width,
+            userPaletteImage.height
         )
         mainPaletteBounds.set(
-                mainPaletteImage.x,
-                mainPaletteImage.y,
-                mainPaletteImage.width,
-                mainPaletteImage.height
+            mainPaletteImage.x,
+            mainPaletteImage.y,
+            mainPaletteImage.width,
+            mainPaletteImage.height
         )
 
         // userMovableImage должна быть после pack() так как она изначально не видна в окне
@@ -237,7 +277,6 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
 
         res.textureUpdate()
 
-        system.set<AppLayersSystem>(true)
     }
 
     private fun createSettings() {
@@ -293,7 +332,7 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
         val offsetDownButton = ImageButton(module.skin.getDrawable(UI.ARROW_DOWN))
         val offsetUpButton = ImageButton(module.skin.getDrawable(UI.ARROW_DOWN))
         // FIXME добавить в текстуру перевернутую стрелку, либо добавить в атлас перевернутый регион
-        (offsetUpButton.image.drawable as SpriteDrawable).sprite.flip(false, true)
+//        (offsetUpButton.image.drawable as SpriteDrawable).sprite.flip(false, true)
 
         val offsetLabel = object : Label("0", module.skin) {
             var preOffset = UserPalette.storage[belong].offset
@@ -391,7 +430,7 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
                         UserPalette.storage[Companion.belong].setUserColor(this@AppPaletteWindow)
                         // visual change palette
                         (userPaletteImage.drawable as TextureRegionDrawable).region.setRegion(
-                                res.atlas.findRegion(palette.paletteName.toString())
+                            res.atlas.findRegion(palette.paletteName.toString())
                         )
                     }
                 }
@@ -419,10 +458,10 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
     // обязательный апгрейд границ пользовательской палитры после show\hide основной палитры
     private fun reboundUserPalette() {
         userPaletteBounds.set(
-                userPaletteImage.x,
-                userPaletteImage.y,
-                userPaletteImage.width,
-                userPaletteImage.height
+            userPaletteImage.x,
+            userPaletteImage.y,
+            userPaletteImage.width,
+            userPaletteImage.height
         )
     }
 
@@ -491,8 +530,8 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
             val cellId = getCellId(paletteBounds)
             if (cellId > -1) {
                 cellImage.setPosition(
-                        actorBounds[cellId].x + paletteBounds.x - 1,
-                        actorBounds[cellId].y + paletteBounds.y - 1
+                    actorBounds[cellId].x + paletteBounds.x - 1,
+                    actorBounds[cellId].y + paletteBounds.y - 1
                 )
                 cellImage.isVisible = true
                 cellImage.toFront()
@@ -515,8 +554,8 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
         val pixelColor = UserPalette.storage[belong].cells[cellId].intColor
         highlightUserColorImage.color.set(pixelColor)
         highlightUserColorImage.setPosition(
-                actorBounds[cellId].x + userPaletteImage.x,
-                actorBounds[255 - cellId].y + userPaletteImage.y
+            actorBounds[cellId].x + userPaletteImage.x,
+            actorBounds[255 - cellId].y + userPaletteImage.y
         )
         highlightUserColorImage.toFront()
         highlightUserColorImage.isVisible = true
@@ -571,19 +610,20 @@ class AppPaletteWindow : WindowOutScreen("Palette") {
             tmpBounds.set(actorBounds[cellId])
             // установить координаты передвигаемой ячейки цвета
             userMovableImage.setPosition(
-                    actorBounds[cellId].x + mainPaletteImage.x,
-                    actorBounds[cellId].y + mainPaletteImage.y
+                actorBounds[cellId].x + mainPaletteImage.x,
+                actorBounds[cellId].y + mainPaletteImage.y
             )
             // Y нужно перевернуть (откуда копировать битмап)
-            val y = (mainPaletteRegion.regionY - tmpBounds.y + mainPaletteRegion.regionHeight + 1 - tmpBounds.height - space).toInt()
+            val y =
+                (mainPaletteRegion.regionY - tmpBounds.y + mainPaletteRegion.regionHeight + 1 - tmpBounds.height - space).toInt()
             // скопировать полученый регион ячейки основноной палитры в переносимую ячейку
             res.pixmap.drawPixmap(
-                    res.pixmap,
-                    movableCellRegion.regionX, movableCellRegion.regionY,
-                    (mainPaletteRegion.regionX + tmpBounds.x).toInt(),
-                    y,
-                    tmpBounds.width.toInt(),
-                    tmpBounds.height.toInt()
+                res.pixmap,
+                movableCellRegion.regionX, movableCellRegion.regionY,
+                (mainPaletteRegion.regionX + tmpBounds.x).toInt(),
+                y,
+                tmpBounds.width.toInt(),
+                tmpBounds.height.toInt()
             )
             // сообщить о необходимочти перерисовки текстуры
             isTextureUpdate = true

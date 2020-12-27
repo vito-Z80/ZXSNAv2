@@ -1,5 +1,6 @@
 package ru.serdjuk.zxsna.app.tools
 
+import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.system.ISystem
 
 @ExperimentalUnsignedTypes
@@ -8,9 +9,9 @@ class AppToolsSystem : ISystem {
         var usedTool = 0
     }
 
-    override var isVisible = true
-
     val tools: Array<ITools> = arrayOf(PenTool(), FillTool(), SelectTool())
+
+    override var isVisible = false
 
     override fun update(delta: Float) {
         tools.forEach { it.update(delta) }

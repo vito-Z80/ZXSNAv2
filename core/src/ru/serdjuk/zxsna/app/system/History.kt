@@ -12,14 +12,13 @@ object History {
     val hp = Stack<UR>()
     var position = 0
 
-    //    val tools = component.get<AppToolsSystem>().tools
-    val tools = system.set<AppToolsSystem>(true).tools
+//    val tools = system.set<AppToolsSystem>().tools
 
 
     fun update() {
         if (keyHold(Input.Keys.CONTROL_LEFT) && keyOnce(Input.Keys.Z) && hp.size > 0) {
             val data = undo()
-            tools.forEach { it.undo(data) }
+            system.get<AppToolsSystem>()?.tools?.forEach { it.undo(data) }
         }
     }
 

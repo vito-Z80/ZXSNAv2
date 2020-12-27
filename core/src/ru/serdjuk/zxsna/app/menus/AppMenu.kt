@@ -7,7 +7,7 @@ import ru.serdjuk.zxsna.app.windows.popup.AppSelectionMenu
  */
 @ExperimentalUnsignedTypes
 class AppMenu {
-    final val highlightedArea = AppSelectionMenu()
+    val highlightedArea = AppSelectionMenu()
 }
 
 @ExperimentalUnsignedTypes

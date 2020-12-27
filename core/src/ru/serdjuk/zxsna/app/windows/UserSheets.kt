@@ -61,7 +61,7 @@ class UserSheets(var cellSize: Int = 16, var spacing: Int = 1) : WindowOutScreen
         if (keyOnce(Input.Keys.P)) {
             createUserLine()
         }
-        if (keys.isPressed(KEYS.ADD_NEW_GROUP)) {
+        if (keyOnce(Input.Keys.S)) {
             println("add")
             userGroup.forEach { it.addImage(res.atlas.findRegion(UI.TOOL_FILL)) }
         }

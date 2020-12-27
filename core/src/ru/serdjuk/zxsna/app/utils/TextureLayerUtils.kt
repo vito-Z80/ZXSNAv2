@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import ru.serdjuk.zxsna.app.palette.PaletteData
 import ru.serdjuk.zxsna.app.windows.LayerMenuInfoWindow
 import ru.serdjuk.zxsna.app.layers.AppLayersSystem
-import ru.serdjuk.zxsna.app.system.sensor
 import ru.serdjuk.zxsna.app.system.system
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -31,10 +30,10 @@ open class TextureLayerUtils {
              */
     fun collect4bpp(resourceSize: Int, infoMenu: LayerMenuInfoWindow) {
         val userSelection = RectInt(
-                sensor.selectRectangle.x.toInt(),
-                sensor.selectRectangle.y.toInt(),
-                sensor.selectRectangle.width.toInt(),
-                sensor.selectRectangle.height.toInt()
+//                sensor.selectRectangle.x.toInt(),
+//                sensor.selectRectangle.y.toInt(),
+//                sensor.selectRectangle.width.toInt(),
+//                sensor.selectRectangle.height.toInt()
         )
         val b = ArrayList<Byte>(1)
         val rectanglesNumber = (userSelection.width / resourceSize) * (userSelection.height / resourceSize)
@@ -87,7 +86,7 @@ open class TextureLayerUtils {
         // data залить прозрачным цветом ранее выбранным пользователем
         val data = IntArray(size / 2) { 0 }
 //        val pixmap = res.layers[AppPaletteWindow.offset].pixmap
-        val pixmap = system.set<AppLayersSystem>().getLayer()!!.pixmap
+        val pixmap = system.get<AppLayersSystem>()?.getLayer()!!.pixmap
         repeat(selection.height) heightY@{ y ->
             repeat(selection.width) widthX@{ x ->
                 val colorInt = pixmap.getPixel(selection.x + x, selection.y + y)
@@ -121,7 +120,7 @@ open class TextureLayerUtils {
      * @param resourceSize размер ресурса: 16 = спрайт, 8 = тайл
      */
     fun createForSheets(resourceSize: Int) {
-        sensor.transformSelectionRectangle()
+//        sensor.transformSelectionRectangle()
 
 
     }

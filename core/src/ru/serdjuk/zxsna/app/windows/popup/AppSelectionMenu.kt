@@ -86,7 +86,14 @@ class AppSelectionMenu : PopupWindow() {
                 val text = "group_${sheets.userGroup.size}"
                 module.stage.addActor(TextEntryWindow("Add new group", text, fun(str: String) {
                     sheets::createUserLine.invoke(str)
+
                     fillGroups()
+//                    tileGroupsMenu.removeItemsAfter(groupsIsEmpty)
+//                    sheets.userGroup.forEach {
+//                        val label = Label(it.labelCell.actor.text, module.skin, UI.LABEL_BN_LIGHT_BLACK)
+//                        tileGroupsMenu.addItem(label)
+//                    }
+
                     tileGroupsMenu.pack()
                 }))
             })

@@ -13,11 +13,13 @@ import com.kotcrab.vis.ui.widget.PopupMenu
 import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.component.ui.UI
 import ru.serdjuk.zxsna.app.component.ui.debug.AppDebug
+import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.palette.AppPaletteWindow
 import ru.serdjuk.zxsna.app.system.ImageSystem
 import ru.serdjuk.zxsna.app.system.file
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.system
+import ru.serdjuk.zxsna.app.tools.AppToolsSystem
 import ru.serdjuk.zxsna.app.tools.actors.AppToolsWindow
 
 @ExperimentalUnsignedTypes
@@ -28,8 +30,8 @@ class MainMenu : Image() {
     private val fileButton = TextButton(" File", module.skin)
     private val windowsButton = TextButton(" Windows", module.skin)
     private val imageSystemButton = TextButton(" Image system", module.skin)
-    private val spriteEditorButton = TextButton(" Sprite editor", module.skin)
-    private val levelEditorButton = TextButton(" Level editor", module.skin)
+    private val layerSystemButton = TextButton(" Layers system", module.skin)
+    private val levelEditorButton = TextButton(" Levels system", module.skin)
 
     private val popupFile = PopupMenu()
     private val popupWindow = PopupMenu()
@@ -38,10 +40,11 @@ class MainMenu : Image() {
     init {
         sprite.sprite.setFlip(false, true)
         fileButton.pack()
+        layerSystemButton.pack()
         imageSystemButton.pack()
 
 
-        buttonGroup.add(imageSystemButton, spriteEditorButton, levelEditorButton)
+        buttonGroup.add(imageSystemButton, layerSystemButton, levelEditorButton)
         buttonGroup.uncheckAll()
 
         setDrawableBounds()
@@ -59,21 +62,23 @@ class MainMenu : Image() {
         table.add(imageSystemButton).fillX().expandX().pad(1f)
         imageSystemButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-//                AppLayersSystem.layerType = 0
+                system.hideAll()
+                system.activate<ImageSystem>().isVisible = true
             }
         })
-        // sprite editor system
-        table.add(spriteEditorButton).fillX().expandX().pad(1f)
-        spriteEditorButton.addListener(object : ChangeListener() {
+        // layers editor system
+        table.add(layerSystemButton).fillX().expandX().pad(1f)
+        layerSystemButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-//                AppLayersSystem.layerType = AppLayersSystem.Type.SPRITES_4BPP
+                system.hideAll()
+                system.activate<AppLayersSystem>().isVisible = true
             }
         })
-        // tiles editor system
+        // levels editor system
         table.add(levelEditorButton).fillX().expandX().pad(1f).fillX()
         levelEditorButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-//                AppLayersSystem.layerType = AppLayersSystem.Type.TILES_4BPP
+                system.hideAll()
             }
         })
 
@@ -106,7 +111,8 @@ class MainMenu : Image() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                imageSystemButton.isChecked = true
 //                val imageSystem = system.display<ImageSystem>(true) ?: return
-                val imageSystem = system.set<ImageSystem>(true) ?: return
+                system.hideAll()
+                system.show<ImageSystem>()
                 file.loadImagesSequence()
             }
         })
@@ -204,7 +210,7 @@ class MainMenu : Image() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 val tool = windowsCollector<AppToolsWindow>()
                 tool.toCenter()
-                Packable.addComponent(tool)
+                system.activate<AppToolsSystem>().isVisible = true
             }
         })
 

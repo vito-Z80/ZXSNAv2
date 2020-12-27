@@ -30,7 +30,7 @@ class PenTool : ITools() {
     override fun update(delta: Float) {
         if (AppToolsSystem.usedTool != toolName) return
         if (buttonOnce(0)) {
-            layer = system.set<AppLayersSystem>(true).getLayer()
+            layer = system.get<AppLayersSystem>()?.getLayer()
             startDraw = true
             points.clear()
             colors.clear()

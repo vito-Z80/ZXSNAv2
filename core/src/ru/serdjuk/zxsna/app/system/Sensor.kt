@@ -24,22 +24,7 @@ class Sensor {
     var paletteOffset = 0
     var progressBarIndicator = 0
 
-    val selectRectangle = Rectangle()
 
-    // позиция доставленной ячейки из главной палитры в пользовательскую
-//    val landingCell = PaletteCell(-1, "", PaletteData.paletteTables.mainRegion)
-
-    /**
-     * преобразует выделение в правильный прямоугольник
-     * X,Y = bottomLeft & WIDTH,HEIGHT = to up, to right
-     */
-    fun transformSelectionRectangle() {
-        val x = if (sensor.selectRectangle.width < 0) (sensor.selectRectangle.x + sensor.selectRectangle.width) else sensor.selectRectangle.x
-        val y = if (sensor.selectRectangle.height < 0) (sensor.selectRectangle.y + sensor.selectRectangle.height) else sensor.selectRectangle.y
-        val width = abs(sensor.selectRectangle.width)
-        val height = abs(sensor.selectRectangle.height)
-        selectRectangle.set(x, y, width, height)
-    }
 
     fun resizeBounds() {
         // FIXME add world bounds changed
