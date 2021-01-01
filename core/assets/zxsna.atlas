@@ -1,7 +1,7 @@
 
 zxsna.png
 size: 2048,2048
-format: RGBA8888
+format: RGBA4444
 filter: Nearest,Nearest
 repeat: none
 BenchNineLight
@@ -20,21 +20,21 @@ JetBrainsLight
   index: -1
 arrow16x8
   rotate: false
-  xy: 320, 2024
+  xy: 64, 1704
   size: 16, 8
   orig: 16, 8
   offset: 0, 0
   index: -1
 arrowDown
   rotate: false
-  xy: 160, 1824
+  xy: 256, 1952
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 border
   rotate: false
-  xy: 0, 1648
+  xy: 64, 1712
   size: 32, 32
   split: 2, 2, 2, 2
   orig: 32, 32
@@ -42,7 +42,7 @@ border
   index: -1
 buttonOff9p
   rotate: false
-  xy: 128, 1808
+  xy: 192, 1872
   size: 32, 32
   split: 8, 8, 8, 8
   orig: 32, 32
@@ -50,7 +50,7 @@ buttonOff9p
   index: -1
 buttonOn9p
   rotate: false
-  xy: 256, 1968
+  xy: 0, 1648
   size: 32, 32
   split: 8, 8, 8, 8
   orig: 32, 32
@@ -58,56 +58,56 @@ buttonOn9p
   index: -1
 checkOffIcon
   rotate: false
-  xy: 64, 1728
+  xy: 128, 1792
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 checkOnIcon
   rotate: false
-  xy: 128, 1792
+  xy: 192, 1856
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 color959696
   rotate: false
-  xy: 96, 1759
+  xy: 144, 1807
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorBlack
   rotate: false
-  xy: 64, 1727
+  xy: 96, 1743
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorDarkGray
   rotate: false
-  xy: 80, 1743
+  xy: 128, 1791
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorGray
   rotate: false
-  xy: 128, 1791
+  xy: 176, 1839
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorLightGray
   rotate: false
-  xy: 112, 1775
+  xy: 160, 1823
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 colorWhite
   rotate: false
-  xy: 144, 1807
+  xy: 192, 1855
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -122,7 +122,7 @@ defaultPane9
   index: -1
 doubleArrow
   rotate: false
-  xy: 256, 1952
+  xy: 0, 1632
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -141,16 +141,23 @@ font_16_java
   orig: 128, 128
   offset: 0, 0
   index: -1
+gear16x16
+  rotate: false
+  xy: 224, 1888
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 gradientBG
   rotate: false
-  xy: 192, 1872
+  xy: 288, 2000
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 gradientGG
   rotate: false
-  xy: 64, 1744
+  xy: 128, 1808
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -162,30 +169,30 @@ manicminer
   orig: 2048, 16
   offset: 0, 0
   index: -1
-minus
+minus32x32
   rotate: false
-  xy: 0, 1640
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: -1
-penTool
-  rotate: false
-  xy: 288, 2000
+  xy: 0, 1680
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-plus
+penTool
   rotate: false
-  xy: 32, 1672
-  size: 8, 8
-  orig: 8, 8
+  xy: 32, 1680
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+plus32x32
+  rotate: false
+  xy: 256, 1968
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 popupWindow
   rotate: false
-  xy: 288, 1984
+  xy: 32, 1664
   size: 16, 16
   split: 4, 4, 4, 4
   orig: 16, 16
@@ -193,35 +200,35 @@ popupWindow
   index: -1
 selectTool
   rotate: false
-  xy: 32, 1680
+  xy: 96, 1744
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 0, 1680
+  xy: 64, 1744
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 separator8x8
   rotate: false
-  xy: 192, 1856
+  xy: 288, 1984
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 settingsIcon
   rotate: false
-  xy: 224, 1888
+  xy: 320, 2016
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 squadIcon
   rotate: false
-  xy: 96, 1760
+  xy: 160, 1824
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

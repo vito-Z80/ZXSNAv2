@@ -21,5 +21,7 @@ class AppToolsSystem : ISystem {
 
     }
 
+    fun getTool(name: Int) = tools.find { it.toolName == name }
+
 
 }

@@ -1,11 +1,13 @@
-package ru.serdjuk.zxsna.app.tools.actors
+package ru.serdjuk.zxsna.app.windows
 
+import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.component.ui.UI
+import ru.serdjuk.zxsna.app.system.cursor
 import ru.serdjuk.zxsna.app.system.res
 import ru.serdjuk.zxsna.app.system.system
 import ru.serdjuk.zxsna.app.tools.AppToolsSystem
@@ -55,12 +57,15 @@ class AppToolsWindow : WindowOutScreen(" Tools"), Packable {
     private fun setMarkerPosition() {
         when (AppToolsSystem.usedTool) {
             ToolName.PEN -> {
+                cursor.setSystem(Cursor.SystemCursor.Arrow)
                 toolMarker.setPosition(penIcon.x, penIcon.y)
             }
             ToolName.FILL -> {
+                cursor.setSystem(Cursor.SystemCursor.Hand)
                 toolMarker.setPosition(fillIcon.x, fillIcon.y)
             }
             ToolName.SELECT -> {
+                cursor.setSystem(Cursor.SystemCursor.Crosshair)
                 toolMarker.setPosition(selectIcon.x, selectIcon.y)
             }
         }

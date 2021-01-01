@@ -20,7 +20,6 @@ import ru.serdjuk.zxsna.app.system.file
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.system
 import ru.serdjuk.zxsna.app.tools.AppToolsSystem
-import ru.serdjuk.zxsna.app.tools.actors.AppToolsWindow
 
 @ExperimentalUnsignedTypes
 class MainMenu : Image() {

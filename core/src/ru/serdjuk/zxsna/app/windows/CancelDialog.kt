@@ -10,9 +10,10 @@ class CancelDialog(text: String) : Dialog("", module.skin) {
 
     init {
         isModal = true
-        text(text)
+        text(" \n$text")
         row()
-        button("cancel")
+        pad(40f)
+        button("Cancel")
         pack()
         setPosition(
                 Gdx.graphics.width / 2f - prefWidth / 2f,

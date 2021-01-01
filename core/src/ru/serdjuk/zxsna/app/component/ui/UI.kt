@@ -91,9 +91,11 @@ class UI {
         
         const val PROGRESS_BAR = "manicminer"
         
-        const val BUTTON_PLUS = "plus"
-        const val BUTTON_MINUS = "minus"
+        const val BUTTON_PLUS = "plus32x32"
+        const val BUTTON_MINUS = "minus32x32"
         const val CHECK_BUTTON = "checkButton"
+
+        const val GEAR16x16 = "gear16x16"
         
         
         const val SEPARATOR8X8 = "separator8x8"
@@ -209,7 +211,8 @@ class UI {
         skin.add(BUTTON_PLUS, atlas.findRegion(BUTTON_PLUS), TextureRegion::class.java)
         skin.add(BUTTON_MINUS, atlas.findRegion(BUTTON_MINUS), TextureRegion::class.java)
         skin.add(SEPARATOR8X8, atlas.findRegion(SEPARATOR8X8), TextureRegion::class.java)
-        
+        skin.add(GEAR16x16, atlas.findRegion(GEAR16x16), TextureRegion::class.java)
+
         
         val popupWindowRegion = atlas.findRegion(POPUP_WINDOW)
         val popupSplits = popupWindowRegion.splits
@@ -292,6 +295,7 @@ class UI {
             skin.getDrawable(BUTTON_MINUS), skin.getDrawable(BUTTON_PLUS), skin.getFont(DEFAULT), null
         )
         skin.add(CHECK_BUTTON, checkBoxPM, CheckBox.CheckBoxStyle::class.java)
+
         
     }
     

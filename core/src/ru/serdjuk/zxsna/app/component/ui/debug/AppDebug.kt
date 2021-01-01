@@ -28,7 +28,6 @@ class AppDebug() : WindowOutScreen("Debug window") {
     private val packableStorage = Label("", skin)
     private val packableTypes = Label("", skin)
     private val systemSize = Label("", skin)
-    private val millis = Label("", skin)
 
     init {
         table.pad(2f)
@@ -76,9 +75,6 @@ class AppDebug() : WindowOutScreen("Debug window") {
         table.add(systemSize).fill()
         table.row()
 
-        table.add("cpu+gpu:").fill()
-        table.add(millis).fill()
-        table.row()
 
         table.add("UNDO size:").fill()
         table.add(undoSize).fill()
@@ -109,7 +105,6 @@ class AppDebug() : WindowOutScreen("Debug window") {
             packableTypes.setText(Packable.types.size)
             stageActors.setText(module.stage.root.children.size)
             systemSize.setText(system.systems.size)
-            millis.setText("${StartZXSNA.appTime}ms")
             timer = 0f
         }
         super.act(delta)

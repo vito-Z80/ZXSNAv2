@@ -1,20 +1,19 @@
 package ru.serdjuk.zxsna
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL30
 import ru.serdjuk.zxsna.app.component.cameraControl
-import ru.serdjuk.zxsna.app.palette.*
 import ru.serdjuk.zxsna.app.component.ui.ui
 import ru.serdjuk.zxsna.app.component.world.shapes
-import ru.serdjuk.zxsna.app.keys.KEYS
-import ru.serdjuk.zxsna.app.keys.keys
+import ru.serdjuk.zxsna.app.palette.UserPalette
+import ru.serdjuk.zxsna.app.palette.UserPalette4bppSprites
+import ru.serdjuk.zxsna.app.palette.UserPalette4bppTiles
 import ru.serdjuk.zxsna.app.system.*
-import ru.serdjuk.zxsna.app.utils.*
-import ru.serdjuk.zxsna.app.windows.*
-import ru.serdjuk.zxsna.app.windows.popup.AppSelectionMenu
-import kotlin.system.measureTimeMillis
+import ru.serdjuk.zxsna.app.utils.currentBackgroundColor
+import ru.serdjuk.zxsna.app.utils.outActor
+import ru.serdjuk.zxsna.app.windows.MainMenu
+import ru.serdjuk.zxsna.app.windows.sheets.FinalSheets
 
 @ExperimentalUnsignedTypes
 class StartZXSNA : ScreenAdapter() {
@@ -23,10 +22,6 @@ class StartZXSNA : ScreenAdapter() {
     private val batch = module.worldBatch
     private val color = currentBackgroundColor
 
-
-    companion object {
-        var appTime = 0L
-    }
 
     override fun show() {
 
@@ -44,14 +39,13 @@ class StartZXSNA : ScreenAdapter() {
 //        UserPalette.addPalette<UserPalette9bppSprites>("9BPP Sprite palette", UserPalette9bppSprites::class.java)
 
 
-        SheetsTest()
-
-        UserSheets()
+//        SheetsTest()
+//        UserSheets()
 
 //        module.stage.addActor(AppToolTip())
 
 
-        super.show()
+        module.stage.addActor(FinalSheets())
 
     }
 
@@ -64,36 +58,32 @@ class StartZXSNA : ScreenAdapter() {
 //        }
 //        println("---------------------------------")
 
-        val d = 1f / 60f
-        appTime = measureTimeMillis {
 
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
 
-            Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
-            Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
-
-            History.update()
-            sensor.screenMouseYUp.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat())
-            sensor.screenMouseYDown.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
-            if (outActor()) {
-                sensor.preMouse.set(sensor.worldMouse)
-                sensor.mouseRefresh()
-                cameraControl.update(d)
-                system.update(d)
-            } else {
-                cameraControl.amount = 0f
-            }
-            batch.projectionMatrix = camera.combined
-            batch.begin()
-            system.draw()
-
-            batch.draw(res.texture, 0f, 0f)
-            batch.end()
-
-            shapes.update()
-            ui.update(d)
-
-            super.render(d)
+        History.update()
+        sensor.screenMouseYUp.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat())
+        sensor.screenMouseYDown.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
+        if (outActor()) {
+            sensor.preMouse.set(sensor.worldMouse)
+            sensor.mouseRefresh()
+            cameraControl.update(delta)
+            system.update(delta)
+        } else {
+            cameraControl.amount = 0f
         }
+        batch.projectionMatrix = camera.combined
+        batch.begin()
+        system.draw()
+
+        batch.draw(res.texture, 0f, 0f)
+        batch.end()
+
+        shapes.update()
+        ui.update(delta)
+
+        super.render(delta)
 
     }
 

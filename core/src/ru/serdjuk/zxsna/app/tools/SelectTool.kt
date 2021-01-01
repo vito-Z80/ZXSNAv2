@@ -1,6 +1,5 @@
 package ru.serdjuk.zxsna.app.tools
 
-import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
@@ -11,10 +10,14 @@ import ru.serdjuk.zxsna.app.keys.KEYS
 import ru.serdjuk.zxsna.app.keys.keys
 import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.menus.appMenu
-import ru.serdjuk.zxsna.app.system.*
+import ru.serdjuk.zxsna.app.system.UR
+import ru.serdjuk.zxsna.app.system.module
+import ru.serdjuk.zxsna.app.system.sensor
+import ru.serdjuk.zxsna.app.system.system
 import ru.serdjuk.zxsna.app.utils.buttonHold
 import ru.serdjuk.zxsna.app.utils.buttonOnce
 import kotlin.math.abs
+import kotlin.math.floor
 
 @ExperimentalUnsignedTypes
 class SelectTool : ITools() {
@@ -90,50 +93,25 @@ class SelectTool : ITools() {
     private var firstY = 0f
 
     private fun select(area: Rectangle) {
+        val mouseX = floor(sensor.worldMouse.x)
+        val mouseY = floor(sensor.worldMouse.y)
         if (buttonOnce(0)) {
-            firstX = sensor.worldMouse.x.toInt().toFloat()
-            firstY = sensor.worldMouse.y.toInt().toFloat()
-
+            firstX = mouseX
+            firstY = mouseY
             area.set(firstX, firstY, 0f, 0f)
             boundsInfo.setPosition(sensor.screenMouseYUp.x, sensor.screenMouseYUp.y)
             boundsInfo.isVisible = true
+            return
         }
         if (buttonHold(0)) {
-            cursor.setSystem(Cursor.SystemCursor.Crosshair)
             boundsInfo.setPosition(sensor.screenMouseYUp.x, sensor.screenMouseYUp.y)
             boundsInfo.setText("W:${abs(area.width).toInt()}\nH:${abs(area.height).toInt()}")
-            val n = 1
 
-            if (sensor.worldMouse.x > area.x) {
-                area.width = sensor.worldMouse.x.toInt().toFloat() - area.x + n
-                area.x = firstX
-            } else {
-                area.width = sensor.worldMouse.x.toInt().toFloat() - area.x
-                area.x = firstX + n
-            }
-            if (sensor.worldMouse.y > area.y) {
-                area.height = sensor.worldMouse.y.toInt().toFloat() - area.y + n
-                area.y = firstY
-            } else {
-                area.height = sensor.worldMouse.y.toInt().toFloat() - area.y
-                area.y = firstY + n
-            }
+            area.x = if (mouseX > firstX) firstX else mouseX
+            area.width = if (mouseX > firstX) mouseX - area.x + 1f else firstX - mouseX + 1f
+
+            area.y = if (mouseY > firstY) firstY else mouseY
+            area.height = if (mouseY > firstY) mouseY - area.y + 1f else firstY - mouseY + 1f
         }
     }
-
-    /**
-     * преобразует выделение в правильный прямоугольник
-     * X,Y = bottomLeft & WIDTH,HEIGHT = to up, to right
-     */
-    fun transformSelectionRectangle(area: Rectangle) {
-        val x =
-            if (area.width < 0) (area.x + area.width) else area.x
-        val y =
-            if (area.height < 0) (area.y + area.height) else area.y
-        area.set(x, y, abs(area.width), abs(area.height))
-    }
-
-    //---------------------------------------------------------------------------
-
-
 }

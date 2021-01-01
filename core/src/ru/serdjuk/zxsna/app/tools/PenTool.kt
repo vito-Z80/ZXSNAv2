@@ -2,6 +2,7 @@ package ru.serdjuk.zxsna.app.tools
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -45,7 +46,11 @@ class PenTool : ITools() {
         } else {
             if (startDraw && points.size > 0) {
                 startDraw = false
-                val data = URPointsData(UserPalette.storage[AppPaletteWindow.belong].offset, IntArray(colors), IntArray(points))
+                val data = URPointsData(
+                    UserPalette.storage[AppPaletteWindow.belong].offset,
+                    IntArray(colors),
+                    IntArray(points)
+                )
                 History.push(data)
             }
         }
@@ -77,10 +82,10 @@ class PenTool : ITools() {
         val w = bitmap.width.toFloat()
         val h = bitmap.height.toFloat()
         val rect = floatArrayOf(
-                x, y,
-                x, y + h,
-                x + w, y + h,
-                x + w, y
+            x, y,
+            x, y + h,
+            x + w, y + h,
+            x + w, y
         )
         if (isPointInPolygon(rect, sensor.worldMouse.x, sensor.worldMouse.y)) {
             val mouseX = sensor.worldMouse.x.toInt()

@@ -21,8 +21,7 @@ open class PopupWindow : Group() {
     private var hideTime = 60
     
     init {
-        this.hashCode().toString().also { name = it }        // FIXME work in native ?
-        println(name)
+        name = this::class.java.name
     }
     
     fun newWindow(): ScrollPaneContent {

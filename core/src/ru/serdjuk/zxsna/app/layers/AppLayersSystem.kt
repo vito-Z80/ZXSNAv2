@@ -1,11 +1,13 @@
 package ru.serdjuk.zxsna.app.layers
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import ru.serdjuk.zxsna.app.Packable
 import ru.serdjuk.zxsna.app.palette.AppPaletteWindow
 import ru.serdjuk.zxsna.app.palette.UserPalette
 import ru.serdjuk.zxsna.app.system.ISystem
 import ru.serdjuk.zxsna.app.system.module
+import kotlin.math.max
 
 @ExperimentalUnsignedTypes
 class AppLayersSystem : Packable, ISystem {
@@ -56,13 +58,46 @@ class AppLayersSystem : Packable, ISystem {
     }
 
     /**
-     * @param bounds граница с которой будут вырезаные кусочки для тайлов или спрайтов
-     * @param type что вырезать - тайлы или спрайты
+     * Get multiple size by selection.
+     * Sprites 16x16 or tiles 8x8 or 0 is not multiple
+     * @param area select area
+     * @param spriteSize sprite size (16f)
+     * @param tileSize tile size (8f)
+     * @return size (sprite or tile (16 or 8))
+     */
+    fun getMultipleSizeBySelection(area: Rectangle, spriteSize: Float, tileSize: Float) = max(
+        (area.width % spriteSize == 0f && area.height % spriteSize == 0f).let { if (it) spriteSize else 0f },
+        (area.width % tileSize == 0f && area.height % tileSize == 0f).let { if (it) tileSize else 0f }
+    ).toInt().also { println(it) }
+
+    /**
      * @return массив регионов
      */
-    fun getLayerSlices(bounds: Rectangle, type: Int) {
-
-
+    fun getLayerSlices(): Array<TextureRegion>? {
+        val layer = getLayer()
+        if (layer != null) {
+            val spriteSize = 16f
+            val tileSize = 8f
+            val area = layer.selectionArea
+            val itemSize = getMultipleSizeBySelection(area, spriteSize, tileSize)
+            if (itemSize != 0) {
+                val columns = (area.width / itemSize).toInt()
+                val rows = (area.height / itemSize).toInt()
+//                println(columns)
+//                println(rows)
+                val slicesBounds = layer.getSlicesBounds(rows, columns, itemSize)
+                return Array<TextureRegion>(slicesBounds.size) {
+                    TextureRegion(
+                        layer.texture,
+                        slicesBounds[it].x + area.x.toInt(),
+                        slicesBounds[it].y + area.y.toInt(),
+                        slicesBounds[it].width,
+                        slicesBounds[it].height
+                    )
+                }
+            }   // else stops slicing
+        }
+        return null
     }
 
 

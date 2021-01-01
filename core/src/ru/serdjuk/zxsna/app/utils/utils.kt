@@ -11,6 +11,7 @@ import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.system.sensor
 import java.util.*
 import javax.xml.crypto.Data
+import kotlin.math.abs
 import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
@@ -116,5 +117,17 @@ fun Rectangle.addPosition(x: Float, y: Float) {
     this.y += y
 }
 
+
+/**
+ * преобразует выделение в правильный прямоугольник
+ * X,Y = bottomLeft & WIDTH,HEIGHT = to up, to right
+ */
+fun transformSelectionRectangle(area: Rectangle) {
+    val x =
+        if (area.width < 0) (area.x + area.width) else area.x
+    val y =
+        if (area.height < 0) (area.y + area.height) else area.y
+    area.set(x, y, abs(area.width), abs(area.height))
+}
 
 

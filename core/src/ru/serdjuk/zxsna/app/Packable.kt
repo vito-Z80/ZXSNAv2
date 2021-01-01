@@ -2,7 +2,7 @@ package ru.serdjuk.zxsna.app
 
 import com.badlogic.gdx.Gdx
 import ru.serdjuk.zxsna.app.palette.*
-import ru.serdjuk.zxsna.app.tools.actors.AppToolsWindow
+import ru.serdjuk.zxsna.app.windows.AppToolsWindow
 import ru.serdjuk.zxsna.app.layers.AppLayersSystem
 import ru.serdjuk.zxsna.app.system.module
 import ru.serdjuk.zxsna.app.utils.WindowOutScreen
